@@ -4,8 +4,8 @@ import com.cs203.project.covidinfo.*;
 
 import java.io.IOException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 import javax.annotation.PostConstruct;
 
@@ -20,6 +20,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class ScheduledTasks {
     private CovidService covidService;
+
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MMM");
 
     /**
      * For scraping COVID-19 data directly from MOH's website. This method cannot
@@ -44,7 +46,7 @@ public class ScheduledTasks {
         Element deathTable = doc.getElementById("table-2g4oamh1ril").selectFirst("table");
         Elements deathRows = deathTable.select("tr");
 
-        // Past records contain records from before 14 days ago. 
+        // Past records contain records from before 14 days ago.
         // ? Covid pastRecords = new Covid();
         Element firstRow = rows.get(4);
         Element firstDeathRow = deathRows.get(2);
@@ -89,7 +91,7 @@ public class ScheduledTasks {
         try {
             return Jsoup.connect("https://covidsitrep.moh.gov.sg/").get();
         } catch (IOException e) {
-            throw new CovidInfoException("Could not retrive COVID-19 data, please try again.");
+            throw new CovidInfoException();
         }
     }
 
@@ -104,8 +106,9 @@ public class ScheduledTasks {
         Covid covid = new Covid();
         Elements cols = row.select("td");
 
-        SimpleDateFormat formatter1 = new SimpleDateFormat("dd-MMM");
-        covid.setId(formatter1.parse(cols.get(0).text()));
+        // setting a date with a year, formatted to ISO_LOCAL_DATE
+        covid.setDate(LocalDate.parse((cols.get(0).text()), formatter).withYear(LocalDate.now().getYear())
+                .format(DateTimeFormatter.ISO_LOCAL_DATE));
         covid.setImported(Integer.parseInt(cols.get(4).text()));
         covid.setCommunity(Integer.parseInt(cols.get(12).text()));
         covid.setDormitory(Integer.parseInt(cols.get(15).text()));

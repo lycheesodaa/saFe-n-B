@@ -1,6 +1,6 @@
 package com.cs203.project.covidinfo;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -20,13 +20,13 @@ public class CovidServiceImpl implements CovidService {
     }
 
     @Override
-    public Covid getCovid(Date id) {
-        return covidInfo.findById(id).orElse(null);
+    public Covid getCovid(LocalDate date) {
+        return covidInfo.findByDate(date).orElse(null);
     }
 
     @Override
-    public List<Covid> getCovidBetween(Date start, Date end) {
-        return covidInfo.findByIdBetween(start, end);
+    public List<Covid> getCovidBetween(LocalDate start, LocalDate end) {
+        return covidInfo.findByDateBetween(start, end);
     }
 
     /**
@@ -36,28 +36,13 @@ public class CovidServiceImpl implements CovidService {
      * @return Updated information based on website
      */
     @Override
-    public Covid addCovid(Covid covid) {
+    public Covid saveCovid(Covid covid) {
         return covidInfo.save(covid);
     }
 
-    // @Override
-    // public Covid updateCovid(Date id, Covid newCovid) {
-    //     return covidInfo.findById(id).map(covid -> {
-    //         covid.setNewCases(newCovid.getNewCases());
-    //         covid.setTotalDoses(newCovid.getTotalDoses());
-    //         covid.setFullDose(newCovid.getFullDose());
-    //         covid.setOneDose(newCovid.getOneDose());
-    //         covid.setHospitalised(newCovid.getHospitalised());
-    //         covid.setCritical(newCovid.getCritical());
-    //         covid.setDeaths(newCovid.getDeaths());
-
-    //         return covidInfo.save(covid);
-    //     }).orElse(null);
-    // }
-
     @Override
-    public long getTotalCases(Date id) {
-        return covidInfo.getTotalCases(id);
+    public long getTotalCases(LocalDate date) {
+        return covidInfo.getTotalCases(date);
     }
 
 }
