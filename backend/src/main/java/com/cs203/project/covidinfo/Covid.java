@@ -1,13 +1,16 @@
 package com.cs203.project.covidinfo;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PastOrPresent;
 import javax.validation.constraints.PositiveOrZero;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Component;
 
 import lombok.*;
@@ -21,10 +24,14 @@ import lombok.*;
 @NoArgsConstructor
 @EqualsAndHashCode
 public class Covid {
-    @Id 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+
     @NotNull(message = "Date should not be null")
     @PastOrPresent
-    private Date id;
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    private LocalDate date;
 
     // number of cases
     @PositiveOrZero
@@ -36,7 +43,7 @@ public class Covid {
 
     @PositiveOrZero
     private long dormitory;
-    
+
     @PositiveOrZero
     private long newCases;
 
