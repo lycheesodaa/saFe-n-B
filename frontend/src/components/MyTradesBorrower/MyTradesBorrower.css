@@ -1,0 +1,13 @@
+.my-trades-borrower {
+    width:80%;
+    margin:0 auto;
+}
+
+.imp {
+    
+}
+
+.imp:hover {
+    cursor: pointer;
+    font-size: 105%;
+}
