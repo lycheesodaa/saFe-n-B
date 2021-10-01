@@ -1,9 +1,11 @@
 package com.cs203.project.scheduler;
 
 import com.cs203.project.covidinfo.*;
+import com.gargoylesoftware.htmlunit.WebClient;
+import com.gargoylesoftware.htmlunit.html.HtmlPage;
 
+import java.io.File;
 import java.io.IOException;
-import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
@@ -13,7 +15,6 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -21,7 +22,13 @@ import org.springframework.stereotype.Component;
 public class ScheduledTasks {
     private CovidService covidService;
 
+    private static final WebClient webClient = new WebClient();
+
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MMM");
+
+    public ScheduledTasks(CovidService covidService) {
+        this.covidService = covidService;
+    }
 
     /**
      * For scraping COVID-19 data directly from MOH's website. This method cannot
@@ -39,11 +46,12 @@ public class ScheduledTasks {
         // scraping the tables
         // table begins at row 5, latest element at 18
         // row 4 contains info from past records
-        Element table = doc.getElementById("table-uqi01msyb4o").selectFirst("table");
+        Element table = doc.select("div.dash-spreadsheet-container.dash-spreadsheet.dash-empty-01.dash-no-filter.dash-fill-width").get(1).selectFirst("table");
         Elements rows = table.select("tr");
-        // deathTable begins at 2, latest element at 15
+        // deathTable begins at 2, latest element at 15 
+        // #table-yef2nnbrr2c > div.dash-spreadsheet-container.dash-spreadsheet.dash-empty-01.dash-no-filter.dash-fill-width > div > div.row.row-1 > div.cell.cell-1-1.dash-fixed-content > table
         // cumulative **
-        Element deathTable = doc.getElementById("table-2g4oamh1ril").selectFirst("table");
+        Element deathTable = doc.select("div.dash-spreadsheet-container.dash-spreadsheet.dash-empty-01.dash-no-filter.dash-fill-width").get(2).selectFirst("table");
         Elements deathRows = deathTable.select("tr");
 
         // Past records contain records from before 14 days ago.
@@ -89,7 +97,9 @@ public class ScheduledTasks {
      */
     public Document connectionSetup() {
         try {
-            return Jsoup.connect("https://covidsitrep.moh.gov.sg/").get();
+            // File sourcePage = webClient.getPage(("https://covidsitrep.moh.gov.sg/index.html"));
+            // HtmlPage scrapePage = webClient.getPage(sourcePage.toURI().toURL());
+            return Jsoup.connect("https://covidsitrep.moh.gov.sg/index.html").get();
         } catch (IOException e) {
             throw new CovidInfoException();
         }
@@ -106,9 +116,8 @@ public class ScheduledTasks {
         Covid covid = new Covid();
         Elements cols = row.select("td");
 
-        // setting a date with a year, formatted to ISO_LOCAL_DATE
-        covid.setDate(LocalDate.parse((cols.get(0).text()), formatter).withYear(LocalDate.now().getYear())
-                .format(DateTimeFormatter.ISO_LOCAL_DATE));
+        // setting a date with a year
+        covid.setDate(LocalDate.parse((cols.get(0).text()), formatter).withYear(LocalDate.now().getYear()));
         covid.setImported(Integer.parseInt(cols.get(4).text()));
         covid.setCommunity(Integer.parseInt(cols.get(12).text()));
         covid.setDormitory(Integer.parseInt(cols.get(15).text()));
@@ -121,6 +130,6 @@ public class ScheduledTasks {
         covid.setDeaths(Integer.parseInt(deathCols.get(6).text()));
         covid.setRecovered(Integer.parseInt(deathCols.get(4).text()) + Integer.parseInt(deathCols.get(5).text()));
 
-        covidService.addCovid(covid);
+        covidService.saveCovid(covid);
     }
 }
