@@ -19,15 +19,15 @@ public class CovidServiceImpl implements CovidService {
         return covidInfo.findAll();
     }
 
-    @Override
-    public Covid getCovid(LocalDate date) {
-        return covidInfo.findByDate(date).orElse(null);
-    }
+//    @Override
+//    public Covid getCovid(LocalDate date) {
+//        return covidInfo.findByDate(date).orElse(null);
+//    }
 
-    @Override
-    public List<Covid> getCovidBetween(LocalDate start, LocalDate end) {
-        return covidInfo.findByDateBetween(start, end);
-    }
+//    @Override
+//    public List<Covid> getCovidBetween(LocalDate start, LocalDate end) {
+//        return covidInfo.findByDateBetween(start, end);
+//    }
 
     /**
      * Immediately overwrites the existing data since it
@@ -40,9 +40,9 @@ public class CovidServiceImpl implements CovidService {
         return covidInfo.save(covid);
     }
 
-    @Override
-    public long getTotalCases(LocalDate date) {
-        return covidInfo.getTotalCases(date);
-    }
+//    @Override
+//    public long getTotalCases(LocalDate date) {
+//        return covidInfo.getTotalCases(date);
+//    }
 
 }
