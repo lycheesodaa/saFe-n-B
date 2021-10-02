@@ -6,6 +6,7 @@ import com.gargoylesoftware.htmlunit.html.HtmlPage;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
@@ -15,6 +16,12 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.By.ByLinkText;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -23,6 +30,7 @@ public class ScheduledTasks {
     private CovidService covidService;
 
     private static final WebClient webClient = new WebClient();
+
 
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MMM");
 
@@ -39,9 +47,14 @@ public class ScheduledTasks {
      * 
      * @exception CovidInfoException if website is unreachable.
      */
-    @PostConstruct
+    // @PostConstruct
     public void scrape() {
-        Document doc = connectionSetup();
+        // Document doc = connectionSetup();
+        WebDriver driver = new ChromeDriver();
+        WebDriverWait wait = new WebDriverWait(driver, 10);
+        driver.get("https://covidsitrep.moh.gov.sg/");
+
+        WebElement summaryFrame = driver.findElement(By.cssSelector("#modal>iframe"));
 
         // scraping the tables
         // table begins at row 5, latest element at 18
@@ -67,6 +80,8 @@ public class ScheduledTasks {
             Element deathRow = deathRows.get(i - 3);
             setData(row, deathRow);
         }
+
+        driver.quit();
     }
 
     /**
@@ -76,7 +91,8 @@ public class ScheduledTasks {
      * 
      * @exception CovidInfoException if website is unreachable.
      */
-    @Scheduled(cron = "0 0 0 * * *")
+    // @PostConstruct
+    // @Scheduled(cron = "0 0 0 * * *")
     public void dailyScrape() {
         Document doc = connectionSetup();
 
@@ -95,11 +111,19 @@ public class ScheduledTasks {
      * 
      * @return the Document containing the html file to be parsed.
      */
+    @PostConstruct
     public Document connectionSetup() {
         try {
-            // File sourcePage = webClient.getPage(("https://covidsitrep.moh.gov.sg/index.html"));
-            // HtmlPage scrapePage = webClient.getPage(sourcePage.toURI().toURL());
-            return Jsoup.connect("https://covidsitrep.moh.gov.sg/index.html").get();
+            // //HtmlPage scrapePage =  webClient.getPage(("https://covidsitrep.moh.gov.sg/"));
+            // //String doc = Jsoup.connect("https://covidsitrep.moh.gov.sg/").get().outerHtml();
+            // String doc = webClient.getPage(("https://covidsitrep.moh.gov.sg/")).toString();
+            // HtmlPage scrapedPage = webClient.getPage(new File(doc).toURI().toURL());
+            // //System.out.println(scrapedPage);
+            // return Jsoup.parse(scrapedPage.asXml());
+
+
+            driver.get("https://covidsitrep.moh.gov.sg/");
+            driver.findElement(By.linkText("Summary Table"));
         } catch (IOException e) {
             throw new CovidInfoException();
         }
