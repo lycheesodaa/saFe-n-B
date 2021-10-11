@@ -2,6 +2,7 @@ package com.cs203.project.User;
 
 import java.sql.Date;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Collection;
 
 import javax.persistence.Column;
@@ -62,14 +63,16 @@ public class User implements UserDetails {
 
 
 
-    public User(String username, String password, String authorities, String OType, String CName, int contNo, Date cDate) {
+    public User(String username, String password, String authorities, String OType, String CName, int contNo) {
         this.username = username;
         this.password = password;
         this.authorities = authorities;
         this.OType = OType;
         this.CName = CName;
         this.contNo = contNo;
-        this.cDate = cDate;
+        Calendar calendar = Calendar.getInstance();
+        java.util.Date currentDate = calendar.getTime();
+        this.cDate = new java.sql.Date(currentDate.getTime());
     }
 
     @Override
