@@ -1,6 +1,5 @@
 package com.cs203.project.covidinfo;
 
-import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -18,16 +17,15 @@ public class CovidServiceImpl implements CovidService {
     public List<Covid> listCovids() {
         return covidInfo.findAll();
     }
+    
+    @Override
+    public Covid getLatestCovid() {
+    	List<Covid> covids = covidInfo.findAll();
+    	Covid latest = covids.get(covids.size() - 1);
+    	return latest;
+    }
 
-//    @Override
-//    public Covid getCovid(LocalDate date) {
-//        return covidInfo.findByDate(date).orElse(null);
-//    }
 
-//    @Override
-//    public List<Covid> getCovidBetween(LocalDate start, LocalDate end) {
-//        return covidInfo.findByDateBetween(start, end);
-//    }
 
     /**
      * Immediately overwrites the existing data since it
@@ -40,9 +38,21 @@ public class CovidServiceImpl implements CovidService {
         return covidInfo.save(covid);
     }
 
-//    @Override
-//    public long getTotalCases(LocalDate date) {
-//        return covidInfo.getTotalCases(date);
-//    }
+
 
 }
+
+//@Override
+//public Covid getCovid(LocalDate date) {
+//  return covidInfo.findByDate(date).orElse(null);
+//}
+
+//@Override
+//public List<Covid> getCovidBetween(LocalDate start, LocalDate end) {
+//  return covidInfo.findByDateBetween(start, end);
+//}
+
+//@Override
+//public long getTotalCases(LocalDate date) {
+//  return covidInfo.getTotalCases(date);
+//}
