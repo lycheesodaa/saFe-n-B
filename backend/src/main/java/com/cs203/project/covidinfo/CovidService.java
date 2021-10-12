@@ -5,8 +5,10 @@ import java.util.List;
 
 public interface CovidService {
     List<Covid> listCovids();
-//    Covid getCovid(LocalDate date);
-//    List<Covid> getCovidBetween(LocalDate start, LocalDate end);
+    Covid getLatestCovid();
     Covid saveCovid(Covid covid);
-//    long getTotalCases(LocalDate date);
 }
+
+//Covid getCovid(LocalDate date);
+//List<Covid> getCovidBetween(LocalDate start, LocalDate end);
+//long getTotalCases(LocalDate date);
