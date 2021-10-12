@@ -28,52 +28,58 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode
+@Table(name = "user")
 public class User implements UserDetails {
 
-    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column
     private Long id;
 
     @NotNull(message = "email should not be null")
     @Email(message = "Email must be valid")
+    @Column
     private String username;//The user email
 
   
     @NotNull(message = "Password should not be null")
     @Size(min = 6, message = "Password should be at least 6 characters")
+    @Column
     private String password;
 
     @NotNull(message = "Authorities should not be null")
+    @Column
     private String authorities;
 
     @NotNull(message = "Outlet type cannot be null")
+    @Column
     private String OType;
 
     @NotNull(message = "Company name cannot be null")
+    @Column
     private String CName;
 
     @NotNull(message = "Contact number")
-    @Size(min = 8, max = 8, message = "Singapore phone numbers are 8 digits long")
+    @Column
     private int contNo;
 
-    @NotNull(message = "Creation Date cannot be null")
-    private Date cDate;
+    @Column
+    private Date cDate = new java.sql.Date(Calendar.getInstance().getTime().getTime());
 
 
 
-    public User(String username, String password, String authorities, String OType, String CName, int contNo) {
-        this.username = username;
-        this.password = password;
-        this.authorities = authorities;
-        this.OType = OType;
-        this.CName = CName;
-        this.contNo = contNo;
-        Calendar calendar = Calendar.getInstance();
-        java.util.Date currentDate = calendar.getTime();
-        this.cDate = new java.sql.Date(currentDate.getTime());
-    }
+    // public User(String username, String password, String authorities, String OType, String CName, int contNo) {
+    //     this.username = username;
+    //     this.password = password;
+    //     this.authorities = authorities;
+    //     this.OType = OType;
+    //     this.CName = CName;
+    //     this.contNo = contNo;
+    //     Calendar calendar = Calendar.getInstance();
+    //     java.util.Date currentDate = calendar.getTime();
+    //     this.cDate = new java.sql.Date(currentDate.getTime());
+    // }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -140,6 +146,17 @@ public class User implements UserDetails {
     public Date getDate(){
         return cDate;
     }
+
+    public long detId(){
+        return id;
+    }
+
+    public void setId(long i){
+        id = i;
+    }
+
+    
+
 
     
 
