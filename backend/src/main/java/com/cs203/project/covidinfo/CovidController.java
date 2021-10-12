@@ -36,7 +36,6 @@ public class CovidController {
         this.covidService = cs;
     }
 
-
     /**
      * List all Covid reports in the system by day.
      * @return a list of daily Covid reports
@@ -58,7 +57,6 @@ public class CovidController {
         Covid latestCovid = covidService.getLatestCovid();
         return latestCovid;
     }
-    
 
 }
 
