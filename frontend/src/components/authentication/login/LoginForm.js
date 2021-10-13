@@ -4,7 +4,15 @@ import { Form, Button, Alert } from "react-bootstrap";
 import { connect } from "react-redux";
 import { login } from "../../../actions/authActions";
 import { useNavigate } from 'react-router-dom';
-
+import {
+  Link,
+  Stack,
+  Checkbox,
+  TextField,
+  IconButton,
+  InputAdornment,
+  FormControlLabel
+} from '@mui/material';
 // ----------------------------------------------------------------------
 
 const LoginForm = ({ auth, login, error }) => {
@@ -43,29 +51,53 @@ const LoginForm = ({ auth, login, error }) => {
   }, [error]);
 
   return (
-    <Form onSubmit={handleSubmit}>
-      {errorMsg && <Alert variant="danger">{errorMsg}</Alert>}
-      <Form.Group size="lg" controlId="email">
-        <Form.Label>Email</Form.Label>
-        <Form.Control
-          autoFocus
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-      </Form.Group>
-      <Form.Group size="lg" controlId="password">
-        <Form.Label>Password</Form.Label>
-        <Form.Control
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-      </Form.Group>
-      <Button block size="lg" variant="success" type="submit" disabled={!validateForm()}>
-        Login
-      </Button>
-    </Form>
+      <Form onSubmit={handleSubmit}>
+      {/* <Stack spacing={3}>
+          <TextField
+            fullWidth
+            autoComplete="username"
+            type="email"
+            label="Email address"
+          />
+
+          <TextField
+            fullWidth
+            autoComplete="current-password"
+            type="password"
+            label="Password"
+            // InputProps={{
+            //   endAdornment: (
+            //     <InputAdornment position="end">
+            //       <IconButton onClick={handleShowPassword} edge="end">
+            //         <Icon icon={showPassword ? eyeFill : eyeOffFill} />
+            //       </IconButton>
+            //     </InputAdornment>
+            //   )
+            // }}
+          />
+        </Stack> */}
+        {errorMsg && <Alert variant="danger">{errorMsg}</Alert>}
+        <Form.Group size="lg" controlId="email">
+          <Form.Label>Email</Form.Label>
+          <Form.Control
+            autoFocus
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </Form.Group>
+        <Form.Group size="lg" controlId="password">
+          <Form.Label>Password</Form.Label>
+          <Form.Control
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </Form.Group>
+        <Button block size="lg" variant="success" type="submit" disabled={!validateForm()}>
+          Login
+        </Button>
+      </Form>
   );
 }
 const mapStateToProps = (state) => ({
