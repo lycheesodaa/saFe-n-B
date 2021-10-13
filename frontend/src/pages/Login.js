@@ -9,7 +9,9 @@ import Page from '../components/Page';
 import { MHidden } from '../components/@material-extend';
 import { LoginForm } from '../components/authentication/login';
 import AuthSocial from '../components/authentication/AuthSocial';
-
+//login
+import { connect } from "react-redux";
+import { login } from "../actions/authActions";
 // ----------------------------------------------------------------------
 
 const RootStyle = styled(Page)(({ theme }) => ({
@@ -39,9 +41,9 @@ const ContentStyle = styled('div')(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-export default function Login() {
+const Login = ({ auth, login, error }) => {
   return (
-    <RootStyle title="Login | Minimal-UI">
+    <RootStyle title="Login | saFe&B">
       <AuthLayout>
         Don’t have an account? &nbsp;
         <Link underline="none" variant="subtitle2" component={RouterLink} to="/register">
@@ -62,7 +64,7 @@ export default function Login() {
         <ContentStyle>
           <Stack sx={{ mb: 5 }}>
             <Typography variant="h4" gutterBottom>
-              Sign in to Minimal
+              Sign in to saFe&B
             </Typography>
             <Typography sx={{ color: 'text.secondary' }}>Enter your details below.</Typography>
           </Stack>
@@ -83,3 +85,16 @@ export default function Login() {
     </RootStyle>
   );
 }
+
+const mapStateToProps = (state) => ({
+  auth: state.auth,
+  error: state.error
+});
+
+const mapDispatchToProps = dispatch => {
+  return {
+    login: (email, password) => dispatch(login(email, password))
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

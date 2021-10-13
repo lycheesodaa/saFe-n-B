@@ -24,7 +24,7 @@ import {
 
 export default function DashboardApp() {
   return (
-    <Page title="Regulations">
+    <Page title="Statistics">
       <Container maxWidth="xl">
         <Box sx={{ pb: 5 }}>
           <Typography variant="h4">Hi, Welcome back</Typography>

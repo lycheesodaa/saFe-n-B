@@ -1,107 +1,102 @@
-import * as Yup from 'yup';
-import { useState } from 'react';
-import { Icon } from '@iconify/react';
-import { useFormik, Form, FormikProvider } from 'formik';
-import eyeFill from '@iconify/icons-eva/eye-fill';
-import eyeOffFill from '@iconify/icons-eva/eye-off-fill';
+import React, { useState, useEffect } from "react";
+import { Form, Button, Alert } from "react-bootstrap";
+import { createAccount } from "../../../actions/authActions";
+import { connect } from "react-redux";
 import { useNavigate } from 'react-router-dom';
-// material
-import { Stack, TextField, IconButton, InputAdornment } from '@mui/material';
-import { LoadingButton } from '@mui/lab';
 
-// ----------------------------------------------------------------------
-
-export default function RegisterForm() {
+function RegisterForm({ auth, createAccount, error }) {
   const navigate = useNavigate();
-  const [showPassword, setShowPassword] = useState(false);
+  const [dateOfBirth, setDateOfBirth] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
 
-  const RegisterSchema = Yup.object().shape({
-    firstName: Yup.string()
-      .min(2, 'Too Short!')
-      .max(50, 'Too Long!')
-      .required('First name required'),
-    lastName: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Last name required'),
-    email: Yup.string().email('Email must be a valid email address').required('Email is required'),
-    password: Yup.string().required('Password is required')
-  });
+  function validateForm() {
+    return email.length > 0 && password.length > 0 && password == newPassword;
+  }
 
-  const formik = useFormik({
-    initialValues: {
-      firstName: '',
-      lastName: '',
-      email: '',
-      password: ''
-    },
-    validationSchema: RegisterSchema,
-    onSubmit: () => {
-      navigate('/dashboard', { replace: true });
+  function handleSubmit(event) {
+    event.preventDefault();
+    createAccount(email, password, dateOfBirth)
+  }
+
+  function resetForm() {
+    setEmail("");
+    setDateOfBirth("");
+    setPassword("");
+    setNewPassword("");
+  }
+
+  useEffect(() => {
+    if (auth.isAuthenticated === true) {
+      alert("successfully registered");
+      navigate("/user/stats");
     }
-  });
+  }, [auth]);
 
-  const { errors, touched, handleSubmit, isSubmitting, getFieldProps } = formik;
+  useEffect(() => {
+    if (error.status != null) {
+      resetForm();
+      setErrorMsg("User already exists.");
+    }
+  }, [error]);
 
   return (
-    <FormikProvider value={formik}>
-      <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
-        <Stack spacing={3}>
-          <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-            <TextField
-              fullWidth
-              label="First name"
-              {...getFieldProps('firstName')}
-              error={Boolean(touched.firstName && errors.firstName)}
-              helperText={touched.firstName && errors.firstName}
-            />
-
-            <TextField
-              fullWidth
-              label="Last name"
-              {...getFieldProps('lastName')}
-              error={Boolean(touched.lastName && errors.lastName)}
-              helperText={touched.lastName && errors.lastName}
-            />
-          </Stack>
-
-          <TextField
-            fullWidth
-            autoComplete="username"
+    <div className="Registration">
+      <Form onSubmit={handleSubmit}>
+        <Form.Group size="lg" controlId="email">
+          {errorMsg && <Alert variant="danger">{errorMsg}</Alert>}
+          <Form.Label>Email</Form.Label>
+          <Form.Control
+            autoFocus
             type="email"
-            label="Email address"
-            {...getFieldProps('email')}
-            error={Boolean(touched.email && errors.email)}
-            helperText={touched.email && errors.email}
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
-
-          <TextField
-            fullWidth
-            autoComplete="current-password"
-            type={showPassword ? 'text' : 'password'}
-            label="Password"
-            {...getFieldProps('password')}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton edge="end" onClick={() => setShowPassword((prev) => !prev)}>
-                    <Icon icon={showPassword ? eyeFill : eyeOffFill} />
-                  </IconButton>
-                </InputAdornment>
-              )
-            }}
-            error={Boolean(touched.password && errors.password)}
-            helperText={touched.password && errors.password}
+        </Form.Group>
+        <Form.Group size="lg" controlId="dateOfBirth">
+          <Form.Label>Firm's Registration Date</Form.Label>
+          <Form.Control
+            autoFocus
+            type="date"
+            value={dateOfBirth}
+            onChange={(e) => setDateOfBirth(e.target.value)}
           />
-
-          <LoadingButton
-            fullWidth
-            size="large"
-            type="submit"
-            variant="contained"
-            loading={isSubmitting}
-          >
-            Register
-          </LoadingButton>
-        </Stack>
+        </Form.Group>
+        <Form.Group size="lg" controlId="password">
+          <Form.Label>Password</Form.Label>
+          <Form.Control
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </Form.Group>
+        <Form.Group size="lg" controlId="newPassword">
+          <Form.Label>Confirm Password</Form.Label>
+          <Form.Control
+            type="password"
+            value={newPassword}
+            onChange={(e) => setNewPassword(e.target.value)}
+          />
+        </Form.Group>
+        <Button block size="lg" type="submit" disabled={!validateForm()}>
+          Create New Account
+        </Button>
       </Form>
-    </FormikProvider>
+    </div>
   );
 }
+
+const mapStateToProps = (state) => ({
+  auth: state.auth,
+  error: state.error
+});
+
+const mapDispatchToProps = dispatch => {
+  return {
+    createAccount: (email, password, dateOfBirth) => dispatch(createAccount(email, password, dateOfBirth))
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(RegisterForm);

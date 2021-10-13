@@ -11,7 +11,9 @@ import { Button, Box, Divider, MenuItem, Typography, Avatar, IconButton } from '
 import MenuPopover from '../../components/MenuPopover';
 //
 import account from '../../_mocks_/account';
-
+import { connect } from "react-redux";
+import { logoutUser } from "../../actions/authActions";
+import { useNavigate } from 'react-router-dom';
 // ----------------------------------------------------------------------
 
 const MENU_OPTIONS = [
@@ -34,7 +36,13 @@ const MENU_OPTIONS = [
 
 // ----------------------------------------------------------------------
 
-export default function AccountPopover() {
+function AccountPopover({ auth, logoutUser }) {
+  const navigate = useNavigate();
+  function logoutClick() {
+    logoutUser();
+    alert("logged out");
+    navigate("/login");
+  }
   const anchorRef = useRef(null);
   const [open, setOpen] = useState(false);
 
@@ -44,6 +52,7 @@ export default function AccountPopover() {
   const handleClose = () => {
     setOpen(false);
   };
+
 
   return (
     <>
@@ -110,7 +119,7 @@ export default function AccountPopover() {
         ))}
 
         <Box sx={{ p: 2, pt: 1.5 }}>
-          <Button fullWidth color="inherit" variant="outlined">
+          <Button fullWidth color="inherit" variant="outlined" onClick={logoutClick}>
             Logout
           </Button>
         </Box>
@@ -118,3 +127,15 @@ export default function AccountPopover() {
     </>
   );
 }
+
+const mapStateToProps = (state) => ({
+  auth: state.auth
+});
+
+const mapDispatchToProps = dispatch => {
+  return {
+    logoutUser: () => dispatch(logoutUser())
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(AccountPopover);
