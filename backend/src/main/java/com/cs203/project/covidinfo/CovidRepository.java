@@ -12,9 +12,11 @@ import org.springframework.stereotype.Repository;
 public interface CovidRepository extends JpaRepository <Covid, Long> {
     // additional derived queries specified here will be implemented by Spring Data JPA
     // start the derived query with "findBy", then reference the entity attributes you want to filter
-//    Optional<Covid> findByDate(LocalDate date);
-//    List<Covid> findByDateBetween(LocalDate startDate, LocalDate endDate);
 
-//    @Query("SELECT SUM(newCases) FROM Covid c WHERE c.id < ?1")
-//    long getTotalCases(LocalDate date);
 }
+
+//Optional<Covid> findByDate(LocalDate date);
+//List<Covid> findByDateBetween(LocalDate startDate, LocalDate endDate);
+
+//@Query("SELECT SUM(newCases) FROM Covid c WHERE c.id < ?1")
+//long getTotalCases(LocalDate date);

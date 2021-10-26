@@ -11,18 +11,23 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.persistence.PrePersist;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.PastOrPresent;
 import javax.validation.constraints.PositiveOrZero;
 
-
-import org.springframework.format.annotation.DateTimeFormat;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.Type;
 import org.springframework.stereotype.Component;
 
-import lombok.*;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 @Component
 @Entity
@@ -38,12 +43,14 @@ public class Covid {
     @Column(name = "covid_id")
     private Long id;
 
-//    @NotNull(message = "Date should not be null")
-//    @PastOrPresent
-//    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-//    private LocalDate date;
 
-    private Date date;
+    @Column(nullable = false, updatable = false)  
+    @CreationTimestamp
+    private Date created_at;
+    
+    @NotNull
+    @Type(type="text")
+    private String regulations;
     
     
     @PositiveOrZero
@@ -95,12 +102,15 @@ public class Covid {
     private long averageAge;
     
     @OneToMany(mappedBy="covid", orphanRemoval = true, cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<Nationality> nationalityList;
     
     @OneToMany(mappedBy="covid", orphanRemoval = true, cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<InfectionSource> infectionSourceList;
     
     @OneToMany(mappedBy="covid", orphanRemoval = true, cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<Cluster> clusterList;
     
     

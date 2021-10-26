@@ -1,0 +1,14 @@
+export { default as DeceasedCases } from './DeceasedCases';
+export { default as Nationality } from './Nationality';
+export { default as Clusters } from './Clusters';
+export { default as AppCurrentSubject } from './AppCurrentSubject';
+export { default as GenderDistribution } from './GenderDistribution';
+export { default as CriticalCases } from './CriticalCases';
+export { default as AppNewsUpdate } from './AppNewsUpdate';
+export { default as ActiveCases } from './ActiveCases';
+export { default as AppOrderTimeline } from './AppOrderTimeline';
+export { default as AppTasks } from './AppTasks';
+export { default as AppTrafficBySite } from './AppTrafficBySite';
+export { default as InfectionSources } from './InfectionSources';
+export { default as TotalCases } from './TotalCases';
+export { default as ImportedVsLocal } from './ImportedVsLocal';
