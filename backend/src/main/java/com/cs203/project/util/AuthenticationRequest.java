@@ -31,6 +31,7 @@ public class AuthenticationRequest {
 	}
 	public String getHashedPassword() {
 	String hashedPassword = Base64.getEncoder().encodeToString(this.getPassword().getBytes());
+//	String hashedPassword = new BCryptPasswordEncoder().encode(this.getPassword());
     return hashedPassword;
 }
 	

@@ -112,33 +112,5 @@ public class Covid {
     @OneToMany(mappedBy="covid", orphanRemoval = true, cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<Cluster> clusterList;
-    
-    
-//    // number of cases
-//    @PositiveOrZero
-//    @NotNull
-//    private long imported;
-//
-//    @PositiveOrZero
-//    private long community;
-//
-//    @PositiveOrZero
-//    private long dormitory;
-//
-//    @PositiveOrZero
-//    private long newCases;
-//
-//    // states (can be null)
-//    // these are cumulative
-//    @PositiveOrZero
-//    private long hospitalised;
-//
-//    @PositiveOrZero
-//    private long critical;
-//
-//    @PositiveOrZero
-//    private long deaths;
-//
-//    @PositiveOrZero
-//    private long recovered;
+        
 }
