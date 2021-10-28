@@ -40,7 +40,7 @@ public class CovidScraper {
 
 //second, minute, hour, day, month, weekday
 	@Scheduled(cron = "0 0 0 * * *")
-	@PostConstruct
+//	@PostConstruct
     public void test() {
 		System.out.println("Starting web scraping");
 		try {

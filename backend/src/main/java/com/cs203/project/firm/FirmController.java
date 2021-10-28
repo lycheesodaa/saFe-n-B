@@ -1,20 +1,13 @@
-package com.cs203.project.account;
+package com.cs203.project.firm;
 
-import java.lang.reflect.Field;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
+
 import java.util.List;
-import java.util.Locale;
-import java.util.Objects;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,25 +24,41 @@ import com.cs203.project.util.MyUserDetailsService;
 
 @CrossOrigin()
 @RestController
-public class AccountController {
+public class FirmController {
 	
-	@Autowired MyUserDetailsService userDetailsService;
-	
-	@Autowired
-	private AccountService accountService;
-	
-	@Autowired
+	private MyUserDetailsService userDetailsService;
+
+	private FirmService firmService;
+
 	private AuthenticationManager authenticationManager;
 	
-	@Autowired
 	private JwtUtil jwtTokenUtil;
 	
-	@RequestMapping("/accounts")
-	public ResponseEntity<List<Account>> getAllAccounts() {
-		return accountService.getAllAccounts();
+	public FirmController(MyUserDetailsService userDetailsService, FirmService firmService, AuthenticationManager authenticationManager, JwtUtil jwtTokenUtil) {
+		this.userDetailsService = userDetailsService;
+		this.firmService = firmService;
+		this.authenticationManager = authenticationManager;
+		this.jwtTokenUtil = jwtTokenUtil;
 	}
 	
-	@PostMapping("/accounts/authenticate")
+	@RequestMapping("/firms")
+	public ResponseEntity<List<Firm>> getAllFirms() {
+		return firmService.getAllFirms();
+	}
+	
+	@PostMapping("/test")
+	public String testing(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
+		return authenticationRequest.getHashedPassword();
+//		try {
+//		authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getEmail(), authenticationRequest.getHashedPassword()));
+//		} catch (BadCredentialsException e) {
+//			throw new Exception("Incorrect email or password", e);
+//		}
+//		
+		
+		}
+	
+	@PostMapping("/firms/authenticate")
 	public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
 		try {
 		authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getEmail(), authenticationRequest.getHashedPassword()));
@@ -64,17 +73,17 @@ public class AccountController {
 		return ResponseEntity.ok(response);
 		}
 		
-	@RequestMapping("/accounts/{email}")
-	public ResponseEntity<Account> getAccount(@PathVariable String email) {
-		return accountService.getAccountByEmail(email);
+	@RequestMapping("/firms/{email}")
+	public ResponseEntity<Firm> getFirm(@PathVariable String email) {
+		return firmService.getFirmByEmail(email);
 	}
 	
-	@RequestMapping(method=RequestMethod.POST, value="/accounts")
-	public ResponseEntity<?> addAccount(@RequestBody Account account) {
-		Account savedAccount = accountService.addAccount(account);
-		if (savedAccount != null) {
+	@RequestMapping(method=RequestMethod.POST, value="/firms")
+	public ResponseEntity<?> addFirm(@RequestBody Firm firm) {
+		Firm savedFirm = firmService.addFirm(firm);
+		if (savedFirm != null) {
 			final MyUserDetails userDetails = (MyUserDetails) userDetailsService
-					.loadUserByUsername(savedAccount.getEmail());
+					.loadUserByUsername(savedFirm.getEmail());
 			final String jwt = jwtTokenUtil.generateToken(userDetails);
 			AuthenticationResponse response = new AuthenticationResponse(jwt, userDetails);
 			return ResponseEntity.ok(response);
@@ -84,14 +93,14 @@ public class AccountController {
 		
 	}
 	
-	@RequestMapping(method=RequestMethod.PUT, value="/accounts")
-	public ResponseEntity<Account> updateAccount(@RequestBody Account account) {
-		return accountService.updateAccount(account);
+	@RequestMapping(method=RequestMethod.PUT, value="/firms")
+	public ResponseEntity<Firm> updateFirm(@RequestBody Firm firm) {
+		return firmService.updateFirm(firm);
 	}
 	
-	@RequestMapping(method=RequestMethod.DELETE, value="/accounts/{email}")
-	public ResponseEntity<Void> deleteAccount(@PathVariable String email) {
-		return accountService.deleteAccount(email);
+	@RequestMapping(method=RequestMethod.DELETE, value="/firms/{email}")
+	public ResponseEntity<Void> deleteFirm(@PathVariable String email) {
+		return firmService.deleteFirm(email);
 	}
 
 	
