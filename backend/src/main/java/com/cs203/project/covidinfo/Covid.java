@@ -1,6 +1,5 @@
 package com.cs203.project.covidinfo;
 
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -18,8 +17,6 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Type;
 import org.springframework.stereotype.Component;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import lombok.AllArgsConstructor;

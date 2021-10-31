@@ -7,6 +7,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import lombok.*;
 
@@ -29,4 +33,9 @@ public class Temperature {
     private String firstRecord;
 
     private String secondRecord;
+
+    @ManyToOne
+	@JoinColumn(name="employee_id")
+	@JsonBackReference
+	private Employee employee;
 }

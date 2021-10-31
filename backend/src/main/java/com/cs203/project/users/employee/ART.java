@@ -7,6 +7,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import lombok.*;
 
@@ -27,4 +31,9 @@ public class ART {
     private LocalDate localDate;
 
     private boolean result;
+
+    @ManyToOne
+	@JoinColumn(name="employee_id")
+	@JsonBackReference
+	private Employee employee;
 }

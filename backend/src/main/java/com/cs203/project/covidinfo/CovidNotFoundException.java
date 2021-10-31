@@ -1,7 +1,5 @@
 package com.cs203.project.covidinfo;
 
-import java.time.LocalDate;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 

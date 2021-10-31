@@ -31,7 +31,7 @@ public class CovidServiceImpl implements CovidService {
 
     /**
      * Immediately overwrites the existing data since it
-     * will only be called in ScheduledTask.java
+     * will only be called in CovidScraper.java
      * 
      * @return Updated information based on website
      */
