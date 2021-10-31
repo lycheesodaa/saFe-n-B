@@ -1,4 +1,4 @@
-package com.cs203.project.firm;
+package com.cs203.project.users.firm;
 
 
 
@@ -12,7 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.cs203.project.employee.Employee;
+import com.cs203.project.users.employee.Employee;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import lombok.Getter;

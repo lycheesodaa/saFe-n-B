@@ -1,14 +1,14 @@
-package com.cs203.project.util;
+package com.cs203.project.users;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.cs203.project.employee.Employee;
-import com.cs203.project.employee.EmployeeRepository;
-import com.cs203.project.firm.Firm;
-import com.cs203.project.firm.FirmRepository;
+import com.cs203.project.users.employee.Employee;
+import com.cs203.project.users.employee.EmployeeRepository;
+import com.cs203.project.users.firm.Firm;
+import com.cs203.project.users.firm.FirmRepository;
 
 @Service
 public class MyUserDetailsService implements UserDetailsService {
@@ -25,7 +25,6 @@ public class MyUserDetailsService implements UserDetailsService {
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		// TODO Auto-generated method stub
 		Firm firm = firmRepository.findByEmail(username);
 		if (firm == null) {
 			Employee employee = employeeRepository.findByEmail(username);

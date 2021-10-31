@@ -1,4 +1,4 @@
-package com.cs203.project.employee;
+package com.cs203.project.users.employee;
 
 import java.util.List;
 
