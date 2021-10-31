@@ -21,11 +21,13 @@ public class CovidServiceImpl implements CovidService {
     @Override
     public Covid getLatestCovid() {
     	List<Covid> covids = covidInfo.findAll();
+        if (covids.size() == 0) {
+            return null;
+        }
+
     	Covid latest = covids.get(covids.size() - 1);
     	return latest;
     }
-
-
 
     /**
      * Immediately overwrites the existing data since it

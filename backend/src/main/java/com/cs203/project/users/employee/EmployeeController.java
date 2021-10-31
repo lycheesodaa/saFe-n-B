@@ -1,4 +1,4 @@
-package com.cs203.project.employee;
+package com.cs203.project.users.employee;
 
 
 import java.util.List;
@@ -16,11 +16,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.cs203.project.users.MyUserDetails;
+import com.cs203.project.users.MyUserDetailsService;
 import com.cs203.project.util.AuthenticationRequest;
 import com.cs203.project.util.AuthenticationResponse;
 import com.cs203.project.util.JwtUtil;
-import com.cs203.project.util.MyUserDetails;
-import com.cs203.project.util.MyUserDetailsService;
 
 @CrossOrigin()
 @RestController

@@ -1,4 +1,4 @@
-package com.cs203.project.firm;
+package com.cs203.project.users.firm;
 
 import java.util.List;
 

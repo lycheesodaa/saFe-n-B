@@ -1,7 +1,8 @@
-package com.cs203.project.employee;
+package com.cs203.project.users.employee;
 
 
 import java.util.Base64;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -9,7 +10,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import com.cs203.project.firm.Firm;
+import com.cs203.project.users.firm.Firm;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import lombok.Getter;
@@ -27,6 +28,20 @@ public class Employee {
 	private String password;
 	
 	private String dateOfBirth;
+
+	private String name;
+
+	private String nric;
+
+	private String address;
+
+	private String contact;
+
+	private boolean vaccinated;
+
+	private List<ART> artList;
+
+	private List<Temperature> tempList;
 	
 	@ManyToOne
 	@JoinColumn(name="firm_email")

@@ -1,4 +1,4 @@
-package com.cs203.project.firm;
+package com.cs203.project.users.firm;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
