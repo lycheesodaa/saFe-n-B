@@ -1,6 +1,7 @@
 package com.cs203.project.users;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.Collection;
 
 import org.springframework.security.core.GrantedAuthority;
@@ -15,13 +16,13 @@ public class MyUserDetails implements UserDetails {
 	private static final long serialVersionUID = 1L;
 	private String email;
 	private String password;
-	private String dateOfBirth;
+	private Date dateOfBirth;
 	// private List<GrantedAuthority> authorities;
 
 	public MyUserDetails(Firm firm) {
 		this.email = firm.getEmail();
 		this.password = firm.getPassword();
-		this.dateOfBirth = firm.getDateOfBirth();
+		this.dateOfBirth = firm.getRegistrationDate();
 	}
 
 	public MyUserDetails(Employee employee) {
@@ -48,7 +49,7 @@ public class MyUserDetails implements UserDetails {
 		return email;
 	}
 
-	public String getDateOfBirth() {
+	public Date getDateOfBirth() {
 		return dateOfBirth;
 	}
 
