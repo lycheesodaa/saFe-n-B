@@ -11,9 +11,13 @@ import org.springframework.stereotype.Service;
 public class EmployeeService {
 	
 	private EmployeeRepository employeeRepository;
+	private TemperatureRepository temperatureRepository;
+	private ARTRepository artRepository;
 	
-	public EmployeeService(EmployeeRepository employeeRepository) {
+	public EmployeeService(EmployeeRepository employeeRepository, TemperatureRepository temperatureRepository, ARTRepository artRepository) {
 		this.employeeRepository = employeeRepository;
+		this.temperatureRepository = temperatureRepository;
+		this.artRepository = artRepository;
 	}
 	
 	public ResponseEntity<List<Employee>> getAllEmployees() {
@@ -54,6 +58,26 @@ public class EmployeeService {
 		}
 		employeeRepository.deleteById(email);
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+	}
+
+	public ResponseEntity<Employee> addTemperature(Temperature temperature, String email) {
+		Employee employee = employeeRepository.findByEmail(email);
+		if (employee == null) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+		}
+		temperature.setEmployee(employee);
+		temperatureRepository.save(temperature);
+		return ResponseEntity.ok(employeeRepository.findByEmail(email));
+	}
+	
+	public ResponseEntity<Employee> addART(ART art, String email) {
+		Employee employee = employeeRepository.findByEmail(email);
+		if (employee == null) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+		}
+		art.setEmployee(employee);
+		artRepository.save(art);
+		return ResponseEntity.ok(employeeRepository.findByEmail(email));
 	}
 
 }
