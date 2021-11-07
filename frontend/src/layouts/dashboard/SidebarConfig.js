@@ -18,6 +18,11 @@ const sidebarConfig = [
     icon: getIcon("codicon:law")
   },
   {
+    title: 'Employee Management',
+    path: '/user/employees',
+    icon: getIcon("mdi:account-box-multiple")
+  },
+  {
     title: 'Scheduler',
     path: '/user/scheduler',
     icon: getIcon("ic:baseline-schedule")

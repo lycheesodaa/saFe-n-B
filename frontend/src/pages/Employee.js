@@ -1,7 +1,7 @@
 import { filter } from 'lodash';
 import { Icon } from '@iconify/react';
 import { sentenceCase } from 'change-case';
-import { useState } from 'react';
+import React, { useState, useEffect } from "react";
 import plusFill from '@iconify/icons-eva/plus-fill';
 import { Link as RouterLink } from 'react-router-dom';
 // material
@@ -27,16 +27,16 @@ import Scrollbar from '../components/Scrollbar';
 import SearchNotFound from '../components/SearchNotFound';
 import { UserListHead, UserListToolbar, UserMoreMenu } from '../components/_dashboard/user';
 //
-import USERLIST from '../_mocks_/user';
+import axios from "axios";
+// import USERLIST from '../_mocks_/user';
 
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
   { id: 'name', label: 'Name', alignRight: false },
-  { id: 'company', label: 'Company', alignRight: false },
-  { id: 'role', label: 'Role', alignRight: false },
-  { id: 'isVerified', label: 'Verified', alignRight: false },
-  { id: 'status', label: 'Status', alignRight: false },
+  { id: 'lastART', label: 'Last ART Date', alignRight: false },
+  { id: 'lastARTStatus', label: 'ART Status', alignRight: false },
+  { id: 'vaccinated', label: 'Vaccination Status', alignRight: false },
   { id: '' }
 ];
 
@@ -71,13 +71,48 @@ function applySortFilter(array, comparator, query) {
   return stabilizedThis.map((el) => el[0]);
 }
 
-export default function User() {
+// added this
+function getLatestART(employees) {
+  const ARTs = employees.ARTList;
+  return ARTs[ARTs.length - 1];
+}
+
+export default function Employee() {
   const [page, setPage] = useState(0);
   const [order, setOrder] = useState('asc');
   const [selected, setSelected] = useState([]);
   const [orderBy, setOrderBy] = useState('name');
   const [filterName, setFilterName] = useState('');
   const [rowsPerPage, setRowsPerPage] = useState(5);
+
+  // const [employees, setEmployees] = useState({
+  //   id: "",
+  //   name: "",
+  //   dob: "",
+  //   password: "",
+  //   nric: "",
+  //   address: "",
+  //   contact: "",
+  //   vaccinated: "",
+  //   ARTList: "",
+  //   temperatureList: ""
+  // });
+
+  // ! not sure about this one
+  const employees = () => {
+    JSON.parse(localStorage.getItem('user')).employeeList
+  };
+
+  // useEffect(() => {
+  //   axios
+  //     .get("http://localhost:8080/firms/" + )
+  //     .then(res => {
+  //       setEmployees(res.data.employeeList);
+  //     })
+  //     .catch(err => {
+  //       console.log(err);
+  //     });
+  // }, [] );
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -87,7 +122,7 @@ export default function User() {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = USERLIST.map((n) => n.name);
+      const newSelecteds = employees.map((n) => n.name);
       setSelected(newSelecteds);
       return;
     }
@@ -125,11 +160,11 @@ export default function User() {
     setFilterName(event.target.value);
   };
 
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - USERLIST.length) : 0;
+  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - employees.length) : 0;
 
-  const filteredUsers = applySortFilter(USERLIST, getComparator(order, orderBy), filterName);
+  const filteredEmployees = applySortFilter(employees, getComparator(order, orderBy), filterName);
 
-  const isUserNotFound = filteredUsers.length === 0;
+  const isEmployeeNotFound = filteredEmployees.length === 0;
 
   return (
     <Page title="User | Minimal-UI">
@@ -144,7 +179,7 @@ export default function User() {
             to="#"
             startIcon={<Icon icon={plusFill} />}
           >
-            New User
+            New Employee
           </Button>
         </Stack>
 
@@ -162,17 +197,18 @@ export default function User() {
                   order={order}
                   orderBy={orderBy}
                   headLabel={TABLE_HEAD}
-                  rowCount={USERLIST.length}
+                  rowCount={employees.length}
                   numSelected={selected.length}
                   onRequestSort={handleRequestSort}
                   onSelectAllClick={handleSelectAllClick}
                 />
                 <TableBody>
-                  {filteredUsers
+                  {filteredEmployees
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row) => {
-                      const { id, name, role, status, company, avatarUrl, isVerified } = row;
+                      const { id, name, vaccinated, ARTList } = row;
                       const isItemSelected = selected.indexOf(name) !== -1;
+                      const latestART = getLatestART(ARTList);
 
                       return (
                         <TableRow
@@ -191,21 +227,28 @@ export default function User() {
                           </TableCell>
                           <TableCell component="th" scope="row" padding="none">
                             <Stack direction="row" alignItems="center" spacing={2}>
-                              <Avatar alt={name} src={avatarUrl} />
+                              {/* <Avatar alt={name} src={avatarUrl} /> */}
                               <Typography variant="subtitle2" noWrap>
                                 {name}
                               </Typography>
                             </Stack>
                           </TableCell>
-                          <TableCell align="left">{company}</TableCell>
-                          <TableCell align="left">{role}</TableCell>
-                          <TableCell align="left">{isVerified ? 'Yes' : 'No'}</TableCell>
+                          {/* <TableCell align="left">{company}</TableCell> */}
+                          <TableCell align="left">{latestART.date}</TableCell>
                           <TableCell align="left">
                             <Label
                               variant="ghost"
-                              color={(status === 'banned' && 'error') || 'success'}
+                              color={(latestART.result  === 'negative' && 'error') || 'success'}
                             >
-                              {sentenceCase(status)}
+                              {sentenceCase(latestART.result)}
+                            </Label>
+                          </TableCell>
+                          <TableCell align="left">
+                            <Label
+                              variant="ghost"
+                              color={(vaccinated === false && 'error') || 'success'}
+                            >
+                              {sentenceCase(vaccinated)}
                             </Label>
                           </TableCell>
 
@@ -221,7 +264,7 @@ export default function User() {
                     </TableRow>
                   )}
                 </TableBody>
-                {isUserNotFound && (
+                {isEmployeeNotFound && (
                   <TableBody>
                     <TableRow>
                       <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
@@ -237,7 +280,7 @@ export default function User() {
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
-            count={USERLIST.length}
+            count={employees.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}
