@@ -2,11 +2,11 @@ package com.cs203.project.users.employee;
 
 
 import java.util.Base64;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -15,14 +15,19 @@ import javax.persistence.Table;
 
 import com.cs203.project.users.firm.Firm;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "Employee")
 public class Employee {
 	
@@ -31,7 +36,8 @@ public class Employee {
 	
 	private String password;
 	
-	private String dateOfBirth;
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")  
+	private Date dateOfBirth;
 
 	private String name;
 
@@ -56,15 +62,6 @@ public class Employee {
 	@JsonBackReference
 	private Firm firm;
 	
-	public Employee() {
-		
-	}
-	
-	public Employee(String email, String password, String dateOfBirth) {
-		this.email = email;
-		this.password = password;
-		this.dateOfBirth = dateOfBirth;
-	}
 	
 	public void addTemperature(Temperature temperature) {
 		this.tempList.add(temperature);
@@ -73,8 +70,8 @@ public class Employee {
 	
 	public Employee hashingPassword(){
         String hashedPassword = Base64.getEncoder().encodeToString(this.getPassword().getBytes());
-        Employee firm = new Employee(this.email, hashedPassword, this.dateOfBirth);
-        return firm;
+        this.setPassword(hashedPassword);
+        return this;
     }
 
 	
