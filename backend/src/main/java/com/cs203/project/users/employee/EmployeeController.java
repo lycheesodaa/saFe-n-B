@@ -81,6 +81,16 @@ public class EmployeeController {
 		
 	}
 	
+	@RequestMapping(method=RequestMethod.POST, value="/employees/{email}/temperature")
+	public ResponseEntity<?> addTemperature(@RequestBody Temperature temperature, @PathVariable String email) {
+		return employeeService.addTemperature(temperature, email);
+	}
+	
+	@RequestMapping(method=RequestMethod.POST, value="/employees/{email}/art")
+	public ResponseEntity<?> addART(@RequestBody ART art, @PathVariable String email) {
+		return employeeService.addART(art, email);
+	}
+	
 	@RequestMapping(method=RequestMethod.PUT, value="/employees")
 	public ResponseEntity<Employee> updateEmployee(@RequestBody Employee Employee) {
 		return employeeService.updateEmployee(Employee);

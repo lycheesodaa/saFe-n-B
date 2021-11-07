@@ -1,6 +1,6 @@
 package com.cs203.project.users.employee;
 
-import java.time.LocalDate;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,6 +11,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.*;
 
@@ -26,13 +27,13 @@ public class Temperature {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "temp_id")
-    private long id;
+    private Long id;
 
-    private LocalDate dateTaken;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")  
+    private Date dateTaken;
+//    { {"dateOfBirth":"01/01/2000"} }  
 
-    private String firstRecord;
-
-    private String secondRecord;
+    private double record;
 
     @ManyToOne
 	@JoinColumn(name="employee_id")

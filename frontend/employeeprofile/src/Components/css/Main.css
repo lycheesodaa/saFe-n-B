@@ -1,0 +1,225 @@
+.header-h1{
+    color: #f80759;
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+        'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+        sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    
+
+}
+
+.navbar{
+    background-color: #f80759;
+    border-radius: 15px;
+    border-style: hidden;
+    padding: 18px; 
+    text-align: left;
+    width: auto;
+    position: sticky;
+    top:0;
+    z-index: 1;
+}
+
+.navbar a{
+    color: rgb(27, 22, 22);
+    text-decoration: none;
+    padding: 10px;
+    color: #f80759;
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+        'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+        sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-decoration: none;
+    color: black;
+    font-size: 16px;
+    
+  
+}
+.navbar a:hover{
+    background-color: #7c7e80;
+    border-style: hidden;
+    border-radius: 5px;
+    color: rgb(255, 254, 253);
+}
+
+@media screen and (max-width:500px){
+    .navbar{
+        background-color: rgb(255, 246, 246);
+        border-radius: 15px;
+        border-style: hidden;
+        padding: 0px; 
+        margin: auto;
+        text-align: left;
+        display: flex;
+        flex-direction: row;
+        height: 50px;
+        padding-bottom: 14px;
+        
+     }
+     #protofolio-link{
+        padding-right: 5px;
+    }
+
+
+}
+@media screen and (max-width:350px){
+
+    .navbar {
+        color: rgb(27, 22, 22);
+        text-decoration: none;
+        padding: 8px;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+            'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+            sans-serif;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        color: black;
+        font-size: 16px;
+        display: flex;
+        flex-direction: column;
+        height: 200px;
+        
+      }
+      
+
+}
+
+.EmployeeDetails{
+    background-color: #f1f1f1;
+    text-align: center;
+    border-style: hidden;
+    border-radius: 15px;
+    padding: 18px; 
+    text-align: center;
+}
+
+.EmployeeDetails>p{
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+        'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+        sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-size: 16px;
+    padding-right: 30px;
+    padding-left: 30px;
+  
+
+}
+.EmployeeDetails>h1{
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+        'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+        sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.records-container{
+    background-color: #f1f1f1;
+    text-align: center;
+    border-style: hidden;
+    border-radius: 15px;
+    padding: 18px; 
+    text-align: center;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+        'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+        sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+
+}
+.records-container>div{
+    background-color: #f1f1f1;
+    width: 150px;
+    height: 150px;;
+    margin: 10px;
+    text-align: center;
+    line-height: 75px;
+    font-size: 30px;
+    border-style: hidden;
+    border-radius: 30px;
+}
+
+.Covid19History{
+    background-color: rgb(255, 255, 255);
+    border-radius: 15px;
+    border-style: hidden;
+    padding: 18px; 
+    text-align: center;
+    
+}
+.Covid19History h1{
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+        'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+        sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.Covid19History p{
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+        'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+        sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-size: 16px;
+    padding-right: 30px;
+    padding-left: 30px;
+}
+
+.container{
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-evenly; 
+    flex-wrap: wrap;
+}
+
+.container a{
+    padding-right: 10px;
+    text-decoration: none;
+  
+}
+
+.container p{
+    
+    color: black;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+        'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+        sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.container a:hover{
+    transform: scale(1.1);
+}
+
+.EmergencyContact{
+    background-color: #f1f1f1;
+    text-align: center;
+    border-style: hidden;
+    border-radius: 15px;
+    padding: 18px; 
+    text-align: center;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+        'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+        sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-size: 16px;
+}
+
+.container-1 > a{
+    padding-left: 5px;
+    font-size: 16px;
+    text-decoration: none;
+    
+}
+span:hover{
+    text-decoration: none;
+    transform: scale(1.5);
+    
+}

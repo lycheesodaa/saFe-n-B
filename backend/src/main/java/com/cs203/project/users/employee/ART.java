@@ -1,6 +1,7 @@
 package com.cs203.project.users.employee;
 
 import java.time.LocalDate;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.*;
 
@@ -26,9 +28,10 @@ public class ART {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "art_id")
-    private long id;
+    private Long id;
 
-    private LocalDate localDate;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")  
+    private Date dateTaken;
 
     private boolean result;
 
