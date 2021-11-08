@@ -7,71 +7,43 @@ import { Box, Card, CardHeader } from '@mui/material';
 import { fNumber } from '../../../utils/formatNumber';
 //
 import { useState } from 'react';
+import { connect } from "react-redux";
 
 // ----------------------------------------------------------------------
 
 
 
-export default function Clusters() {
+function Clusters({ scrape }) {
 
-  const [chartData, setChartData] = useState([{ name: "people", data: [400, 430, 448, 470, 540, 580, 690, 1100, 1200, 1380] }]);
-  const [chartOptions, setChartOptions] = useState({
-    tooltip: {
-      marker: { show: false },
-      y: {
-        formatter: (seriesName) => fNumber(seriesName),
-        title: {
-          formatter: (seriesName) => `#${seriesName}`
-        }
-      }
-    },
-    plotOptions: {
-      bar: { horizontal: true, barHeight: '28%', borderRadius: 2 }
-    },
-    fill: {
-      type: ['solid'],
-      colors: ['#FFC0CB']
-    },
-    xaxis: {
-      categories: []
-    }
-  });
+  const [chartData, setChartData] = useState([]);
+  const [chartOptions, setChartOptions] = useState({});
+
   useEffect(() => {
-    axios
-      .get("http://localhost:8080/covid")
-      .then(res => {
-        setChartData([{
-          name: "people",
-          data: res.data.clusterList.map(c => c.number)
-        }])
-        setChartOptions({
-          tooltip: {
-            marker: { show: false },
-            y: {
-              formatter: (seriesName) => fNumber(seriesName),
-              title: {
-                formatter: (seriesName) => `#${seriesName}`
-              }
+    if ("id" in scrape) {
+      setChartData([{ name: "people", data: scrape.clusterList.map(c => c.number) }])
+      setChartOptions({
+        tooltip: {
+          marker: { show: false },
+          y: {
+            formatter: (seriesName) => fNumber(seriesName),
+            title: {
+              formatter: (seriesName) => `#${seriesName}`
             }
-          },
-          fill: {
-            type: ['solid'],
-            colors: ['#FFC0CB']
-          },
-          plotOptions: {
-            bar: { horizontal: true, barHeight: '28%', borderRadius: 2 }
-          },
-          xaxis: {
-            categories: res.data.clusterList.map(c => c.cluster)
           }
-        })
-      }
-      )
-      .catch(err => {
-        console.log(err);
-      }
-      );
-  }, []);
+        },
+        fill: {
+          type: ['solid'],
+          colors: ['#FFC0CB']
+        },
+        plotOptions: {
+          bar: { horizontal: true, barHeight: '28%', borderRadius: 2 }
+        },
+        xaxis: {
+          categories: scrape.clusterList.map(c => c.cluster)
+        }
+      })
+    }
+  }, [scrape])
 
   return (
     <Card>
@@ -82,3 +54,9 @@ export default function Clusters() {
     </Card>
   );
 }
+
+const mapStateToProps = (state) => ({
+  scrape: state.scrape.scrapedData
+})
+
+export default connect(mapStateToProps, null)(Clusters);

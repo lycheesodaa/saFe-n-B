@@ -7,84 +7,51 @@ import { Card, CardHeader, Box } from '@mui/material';
 //
 import { BaseOptionChart } from '../../charts';
 
+import { connect } from "react-redux";
+
 // ----------------------------------------------------------------------
 
-export default function InfectionSources() {
-  const [chartData, setChartData] = useState([
-    {
-      name: 'Infection Sources',
-      data: [],
-      dataLabels: {
-        enabled: false
-      }
-    }
-  ]);
+function InfectionSources({ scrape }) {
 
-  const [chartOptions, setChartOptions] = useState(BaseOptionChart, {
-    stroke: { width: [0, 2, 3] },
-    plotOptions: { bar: { columnWidth: '11%', borderRadius: 4 } },
-    fill: {
-      type: ['solid'],
-      colors: ['#FFC0CB']
-    },
-    labels: [],
-    tooltip: {
-      shared: true,
-      intersect: false,
-      y: {
-        formatter: (y) => {
-          if (typeof y !== 'undefined') {
-            return `${y.toFixed(0)} people`;
-          }
-          return y;
-        }
-      }
-    }
-  });
+  const [chartData, setChartData] = useState([]);
+  const [chartOptions, setChartOptions] = useState({});
 
   useEffect(() => {
-    axios
-      .get("http://localhost:8080/covid")
-      .then(res => {
-        console.log(res.data.infectionSourceList);
-        setChartData([
-          {
-            name: 'Infection Sources',
-            data: res.data.infectionSourceList.map(c => c.number),
-            dataLabels: {
-              enabled: false
-            }
+    if ("id" in scrape) {
+      setChartData([
+        {
+          name: 'Infection Sources',
+          data: scrape.infectionSourceList.map(c => c.number),
+          dataLabels: {
+            enabled: false
           }
-        ]);
-
-        setChartOptions({
-          stroke: { width: [0, 2, 3] },
-          plotOptions: { bar: { columnWidth: '11%', borderRadius: 4 } },
-          fill: {
-            type: ['solid'],
-            colors: ['#FFC0CB']
-          },
-          labels: res.data.infectionSourceList.map(c => c.infectionSource),
-          tooltip: {
-            shared: true,
-            intersect: false,
-            y: {
-              formatter: (y) => {
-                if (typeof y !== 'undefined') {
-                  return `${y.toFixed(0)} people`;
-                }
-                return y;
+        }
+      ])
+      setChartOptions({
+        stroke: { width: [0, 2, 3] },
+        plotOptions: {
+          bar: { columnWidth: '11%', borderRadius: 4 }
+        },
+        fill: {
+          type: ['solid'],
+          colors: ['#FFC0CB']
+        },
+        labels: scrape.infectionSourceList.map(c => c.infectionSource),
+        tooltip: {
+          shared: true,
+          intersect: false,
+          y: {
+            formatter: (y) => {
+              if (typeof y !== 'undefined') {
+                return `${y.toFixed(0)} people`;
               }
+              return y;
             }
           }
-        });
-      }
-      )
-      .catch(err => {
-        console.log(err);
-      }
-      );
-  }, []);
+        }
+      });
+    }
+  }, [scrape])
 
   return (
     <Card>
@@ -95,3 +62,9 @@ export default function InfectionSources() {
     </Card>
   );
 }
+
+const mapStateToProps = (state) => ({
+  scrape: state.scrape.scrapedData
+})
+
+export default connect(mapStateToProps, null)(InfectionSources);

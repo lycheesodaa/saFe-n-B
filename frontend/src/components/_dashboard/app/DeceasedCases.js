@@ -7,6 +7,8 @@ import { Card, Typography } from '@mui/material';
 // utils
 import { fInternationalNumber } from '../../../utils/formatNumber';
 
+import { connect } from "react-redux";
+
 // ----------------------------------------------------------------------
 
 const RootStyle = styled(Card)(({ theme }) => ({
@@ -37,48 +39,31 @@ const IconWrapperStyle = styled('div')(({ theme }) => ({
 
 
 
-export default function DeceasedCases() {
-  const [covidData, setCovidData] = useState({
-    activeCases: "",
-    averageAge: "",
-    clusterList: "",
-    created_at: "",
-    critical: "",
-    deceased: "",
-    discharged: "",
-    femaleCases: "",
-    genderUnidentifiedCases: "",
-    id: "",
-    importedCases: "",
-    importedOrLocalUnreportedCases: "",
-    infectionSourceList: "",
-    localTransmissions: "",
-    maleCases: "",
-    nationalityList: "",
-    regulations: "",
-    totalCases: ""
-  });
+function DeceasedCases({scrape}) {
+
+  const [deceasedCases, setDeceasedCases] = useState(0);
+
   useEffect(() => {
-    axios
-      .get("http://localhost:8080/covid")
-      .then(res => {
-        setCovidData(res.data);
-      }
-      )
-      .catch(err => {
-        console.log(err);
-      }
-      );
-  }, []);
+    if ("id" in scrape) {
+      setDeceasedCases(scrape.deceased);
+    }
+  }, [scrape])
+  
   return (
     <RootStyle>
       <IconWrapperStyle>
         <Icon icon="healthicons:death-alt2" width={24} height={24} />
       </IconWrapperStyle>
-      <Typography variant="h3">{fInternationalNumber(covidData.deceased)}</Typography>
+      <Typography variant="h3">{fInternationalNumber(deceasedCases)}</Typography>
       <Typography variant="subtitle2" sx={{ opacity: 0.72 }}>
         Deceased Cases
       </Typography>
     </RootStyle>
   );
 }
+
+const mapStateToProps = (state) => ({
+  scrape: state.scrape.scrapedData
+})
+
+export default connect(mapStateToProps, null)(DeceasedCases);

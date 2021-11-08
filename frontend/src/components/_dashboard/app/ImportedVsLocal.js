@@ -7,6 +7,8 @@ import { Card, CardHeader } from '@mui/material';
 // utils
 import { fNumber } from '../../../utils/formatNumber';
 
+import { connect } from "react-redux";
+
 // ----------------------------------------------------------------------
 
 const CHART_HEIGHT = 372;
@@ -31,10 +33,17 @@ const ChartWrapperStyle = styled('div')(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 
-export default function ImportedVsLocal() {
+function ImportedVsLocal({ scrape }) {
   const theme = useTheme();
 
-  const [chartData, setChartData] = useState([])
+  const [chartSeries, setChartSeries] = useState([]);
+
+  useEffect(() => {
+    if ("id" in scrape) {
+      setChartSeries([scrape.localTransmissions, scrape.importedCases, scrape.importedOrLocalUnreportedCases]);
+    }
+  }, [scrape])
+
   const chartOptions = {
     colors: [
       theme.palette.secondary.main,
@@ -73,25 +82,18 @@ export default function ImportedVsLocal() {
     }
   };
 
-  useEffect(() => {
-    axios
-      .get("http://localhost:8080/covid")
-      .then(res => {
-        setChartData([res.data.localTransmissions, res.data.importedCases, res.data.importedOrLocalUnreportedCases]);
-      }
-      )
-      .catch(err => {
-        console.log(err);
-      }
-      );
-  }, []);
-
   return (
     <Card>
       <CardHeader title="Imported v/s Local" />
       <ChartWrapperStyle dir="ltr">
-        <ReactApexChart type="pie" series={chartData} options={chartOptions} height={280} />
+        <ReactApexChart type="pie" series={chartSeries} options={chartOptions} height={280} />
       </ChartWrapperStyle>
     </Card>
   );
 }
+
+const mapStateToProps = (state) => ({
+  scrape: state.scrape.scrapedData
+})
+
+export default connect(mapStateToProps, null)(ImportedVsLocal);

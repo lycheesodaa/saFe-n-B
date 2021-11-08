@@ -10,6 +10,8 @@ import { MHidden } from '../components/@material-extend';
 import { RegisterForm } from '../components/authentication/register';
 import AuthSocial from '../components/authentication/AuthSocial';
 
+import img from "../public/static/illustrations/illustration_register.png";
+
 // ----------------------------------------------------------------------
 
 const RootStyle = styled(Page)(({ theme }) => ({
@@ -54,7 +56,7 @@ export default function Register() {
           <Typography variant="h3" sx={{ px: 5, mt: 10, mb: 5 }}>
             Keep your firm updated with latest F&B Covid Regulations through saFe&B
           </Typography>
-          <img alt="register" src="/static/illustrations/illustration_register.png" />
+          <img alt="register" src={img} />
         </SectionStyle>
       </MHidden>
 

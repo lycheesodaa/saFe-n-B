@@ -14,6 +14,7 @@ import {
 } from './types';
 import axios from "axios";
 import { returnErrors, clearErrors } from "./errorActions";
+import Config from 'config';
 // import bcrypt from "bcrypt";
 
 export const login = (email, password) => (dispatch) => {
@@ -26,7 +27,7 @@ export const login = (email, password) => (dispatch) => {
 
     // Request body
     const body = JSON.stringify({ email, password });
-    axios.post("http://localhost:8080/accounts/authenticate", body, config)
+    axios.post(`${Config.apiURL}/accounts/authenticate`, body, config)
         .then(response => {
             dispatch(clearErrors());
             return dispatch({
@@ -54,7 +55,7 @@ export const forgotPassword = (email, password, dateOfBirth) => (dispatch, getSt
             "Content-Type": "application/json"
         }
     }
-    axios.put("http://localhost:8080/accounts/", body, config)
+    axios.put(`${Config.apiURL}/accounts/`, body, config)
         .then(res => {
             dispatch(clearErrors());
             return dispatch({
@@ -79,7 +80,7 @@ export const createAccount = (email, password, dateOfBirth) => dispatch => {
 
     const body = JSON.stringify({ email, password, dateOfBirth });
 
-    axios.post("http://localhost:8080/accounts/", body, config)
+    axios.post(`${Config.apiURL}/accounts/`, body, config)
         .then(res => {
             dispatch(clearErrors());
             return dispatch({

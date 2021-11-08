@@ -12,6 +12,8 @@ import AuthSocial from '../components/authentication/AuthSocial';
 //login
 import { connect } from "react-redux";
 import { login } from "../actions/authActions";
+
+import img from "../public/static/illustrations/illustration_login.png";
 // ----------------------------------------------------------------------
 
 const RootStyle = styled(Page)(({ theme }) => ({
@@ -56,7 +58,7 @@ const Login = ({ auth, login, error }) => {
           <Typography variant="h3" sx={{ px: 5, mt: 10, mb: 5 }}>
             Hi, Welcome Back
           </Typography>
-          <img src="/static/illustrations/illustration_login.png" alt="login" />
+          <img src={img} alt="login" />
         </SectionStyle>
       </MHidden>
 

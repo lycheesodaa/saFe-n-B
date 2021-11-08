@@ -6,6 +6,8 @@ import { Card, Typography } from '@mui/material';
 // utils
 import { fInternationalNumber } from '../../../utils/formatNumber';
 import axios from "axios";
+import { connect } from "react-redux";
+import {getScrapedData} from "../../../actions/scrapeActions";
 
 // ----------------------------------------------------------------------
 
@@ -37,49 +39,36 @@ const IconWrapperStyle = styled('div')(({ theme }) => ({
 
 const TOTAL = 1352831;
 
-export default function ActiveCases() {
-  const [covidData, setCovidData] = useState({
-    activeCases: "",
-    averageAge: "",
-    clusterList: "",
-    created_at: "",
-    critical: "",
-    deceased: "",
-    discharged: "",
-    femaleCases: "",
-    genderUnidentifiedCases: "",
-    id: "",
-    importedCases: "",
-    importedOrLocalUnreportedCases: "",
-    infectionSourceList: "",
-    localTransmissions: "",
-    maleCases: "",
-    nationalityList: "",
-    regulations: "",
-    totalCases: ""
-  });
+function ActiveCases({scrape, getScrapedData}) {
 
   useEffect(() => {
-    axios
-      .get("http://localhost:8080/covid")
-      .then(res => {
-        setCovidData(res.data);
-      }
-      )
-      .catch(err => {
-        console.log(err);
-      }
-      );
-  }, []);
+    getScrapedData();
+  }, [])
+
+  const [activeCases, setActiveCases] = useState(0);
+
+  useEffect(() => {
+    if ("id" in scrape) {
+      setActiveCases(activeCases);
+    }
+  }, [scrape]) 
+
+
   return (
     <RootStyle>
       <IconWrapperStyle>
         <Icon icon="uit:covid-19" width={24} height={24} />
       </IconWrapperStyle>
-      <Typography variant="h3">{fInternationalNumber(covidData.activeCases)}</Typography>
+      <Typography variant="h3">{fInternationalNumber(scrape.activeCases)}</Typography>
       <Typography variant="subtitle2" sx={{ opacity: 0.72 }}>
         Active Cases
       </Typography>
     </RootStyle>
   );
 }
+
+const mapStateToProps = (state) => ({
+  scrape: state.scrape.scrapedData
+})
+
+export default connect(mapStateToProps, {getScrapedData})(ActiveCases);
