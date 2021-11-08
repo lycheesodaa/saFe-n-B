@@ -39,4 +39,8 @@ public class Temperature {
 	@JoinColumn(name="employee_id")
 	@JsonBackReference
 	private Employee employee;
+
+    public Temperature(double record) {
+        this.record = record;
+    }
 }

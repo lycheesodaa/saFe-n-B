@@ -60,5 +60,8 @@ public class Firm {
         return this;
     }
 	
-	
+	public Firm(String email, String password) {
+		this.email = email;
+		this.password = password;
+	}
 }

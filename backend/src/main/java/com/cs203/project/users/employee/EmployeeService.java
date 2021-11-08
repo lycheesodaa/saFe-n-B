@@ -34,8 +34,9 @@ public class EmployeeService {
 	}
 	
 	public Employee addEmployee(Employee employee) {
-		HttpStatus employeeExists = getEmployeeByEmail(employee.getEmail()).getStatusCode();
-		if (employeeExists == HttpStatus.OK) {
+		// HttpStatus employeeExists = getEmployeeByEmail(employee.getEmail()).getStatusCode();
+		Employee employeeExists = employeeRepository.findByEmail(employee.getEmail());
+		if (employeeExists != null) {
 			return null;
 		}
 		Employee savedEmployee = employeeRepository.save(employee.hashingPassword());
@@ -43,8 +44,8 @@ public class EmployeeService {
 	}
 	
 	public ResponseEntity<Employee> updateEmployee(Employee employee) {
-		HttpStatus employeeExists = getEmployeeByEmail(employee.getEmail()).getStatusCode();
-		if (employeeExists == HttpStatus.NOT_FOUND) {
+		Employee employeeExists = employeeRepository.findByEmail(employee.getEmail());
+		if (employeeExists == null) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 		}
 		Employee updatedEmployee = employeeRepository.save(employee.hashingPassword());
@@ -52,8 +53,8 @@ public class EmployeeService {
 	}
 	
 	public ResponseEntity<Void> deleteEmployee(String email) {
-		HttpStatus employeeExists = getEmployeeByEmail(email).getStatusCode();
-		if (employeeExists == HttpStatus.NOT_FOUND) {
+		Employee employeeExists = employeeRepository.findByEmail(email);
+		if (employeeExists == null) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 		}
 		employeeRepository.deleteById(email);
