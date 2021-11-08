@@ -14,6 +14,7 @@ function App() {
       <Switch>
         <Route path="/f&b-regulations" exact component={Regulations} />
         <Route path="/covid-19-statistics" exact component={Statistics} />
+        <Route path="/employees" exact component={Employee} />
         <Route path="/scheduler" exact component={Scheduler} />
         <Route path="/blog" exact component={Blog} />
         <Route path="/forum" exact component={Forum} />
