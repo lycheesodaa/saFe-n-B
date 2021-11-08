@@ -10,7 +10,8 @@ module.exports = {
     },
     mode: 'development',
     resolve: {
-        extensions: ['.js', '.jsx']
+        extensions: ['.js', '.jsx'],
+        modules: [__dirname, 'src/public', 'node_modules']
     },
     module: {
         rules: [
@@ -23,15 +24,26 @@ module.exports = {
                 test: /\.css$/,
                 use: ['style-loader', 'css-loader']
             },
+            // {
+            //     test: /\.(svg|png|jpg|jpeg|gif)$/,
+            //     use: {
+            //         loader: "file-loader",
+            //         options: {
+            //             name: "[name].[hash].[ext]",
+            //             outputPath: "imgs"
+            //         }
+            //     }
+            // },
             {
-                test: /\.(svg|png|jpg|jpeg|gif)$/,
-                use: {
-                    loader: "file-loader",
-                    options: {
-                        name: "[name].[hash].[ext]",
-                        outputPath: "imgs"
-                    }
-                }
+                test: /\.(png|jpg|gif|svg|jpeg)$/i,
+                use: [
+                    {
+                        loader: 'url-loader',
+                        options: {
+                            limit: 163280,
+                        },
+                    },
+                ],
             }
         ]
     },

@@ -14,6 +14,8 @@ import account from '../../_mocks_/account';
 import { connect } from "react-redux";
 import { logoutUser } from "../../actions/authActions";
 import { useNavigate } from 'react-router-dom';
+
+import img from "../../public/static/mock-images/avatars/avatar_default.jpg";
 // ----------------------------------------------------------------------
 
 const MENU_OPTIONS = [
@@ -76,7 +78,7 @@ function AccountPopover({ auth, logoutUser }) {
           })
         }}
       >
-        <Avatar src={account.photoURL} alt="photoURL" />
+        <Avatar src={img} alt="photoURL" />
       </IconButton>
 
       <MenuPopover

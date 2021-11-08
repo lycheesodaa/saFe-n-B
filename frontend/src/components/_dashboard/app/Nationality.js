@@ -8,62 +8,42 @@ import { fNumber } from '../../../utils/formatNumber';
 //
 import { useState } from 'react';
 
+import { connect } from "react-redux";
+
 // ----------------------------------------------------------------------
 
 
 
-export default function Nationality() {
+function Nationality({ scrape }) {
 
-  const [chartData, setChartData] = useState([{ name: "people", data: [400, 430, 448, 470, 540, 580, 690, 1100, 1200, 1380] }]);
-  const [chartOptions, setChartOptions] = useState({
-    tooltip: {
-      marker: { show: false },
-      y: {
-        formatter: (seriesName) => fNumber(seriesName),
-        title: {
-          formatter: (seriesName) => `#${seriesName}`
-        }
-      }
-    },
-    plotOptions: {
-      bar: { horizontal: true, barHeight: '28%', borderRadius: 2 }
-    },
-    xaxis: {
-      categories: []
-    }
-  });
+  const [chartData, setChartData] = useState([]);
+  const [chartOptions, setChartOptions] = useState({});
+
   useEffect(() => {
-    axios
-      .get("http://localhost:8080/covid")
-      .then(res => {
-        setChartData([{
-          name: "people",
-          data: res.data.nationalityList.map(c => c.number)
-        }])
-        setChartOptions({
-          tooltip: {
-            marker: { show: false },
-            y: {
-              formatter: (seriesName) => fNumber(seriesName),
-              title: {
-                formatter: (seriesName) => `#${seriesName}`
-              }
+    if ("id" in scrape) {
+      setChartData([{
+        name: "people",
+        data: scrape.nationalityList.map(c => c.number)
+      }]);
+      setChartOptions({
+        tooltip: {
+          marker: { show: false },
+          y: {
+            formatter: (seriesName) => fNumber(seriesName),
+            title: {
+              formatter: (seriesName) => `#${seriesName}`
             }
-          },
-          plotOptions: {
-            bar: { horizontal: true, barHeight: '28%', borderRadius: 2 }
-          },
-          xaxis: {
-            categories: res.data.nationalityList.map(c => c.nationality)
           }
-        })
-      }
-      )
-      .catch(err => {
-        console.log(err);
-      }
-      );
-  }, []);
+        },
+        plotOptions: {
+          bar: { horizontal: true, barHeight: '28%', borderRadius: 2 }
+        },
+        xaxis: {
+          categories: scrape.nationalityList.map(c => c.nationality)
+        }
+      });
+    }
+  }, [scrape])
 
   return (
     <Card>
@@ -74,3 +54,9 @@ export default function Nationality() {
     </Card>
   );
 }
+
+const mapStateToProps = (state) => ({
+  scrape: state.scrape.scrapedData
+})
+
+export default connect(mapStateToProps, null)(Nationality);

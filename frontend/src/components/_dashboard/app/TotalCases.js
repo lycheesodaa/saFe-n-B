@@ -3,7 +3,7 @@ import { Icon } from '@iconify/react';
 import { alpha, styled } from '@mui/material/styles';
 import { Card, Typography } from '@mui/material';
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import { connect } from "react-redux";
 
 // ----------------------------------------------------------------------
 import { fInternationalNumber } from '../../../utils/formatNumber';
@@ -36,50 +36,31 @@ const IconWrapperStyle = styled('div')(({ theme }) => ({
 
 
 
-export default function TotalCases() {
-  const [covidData, setCovidData] = useState({
-    activeCases: "",
-    averageAge: "",
-    clusterList: "",
-    created_at: "",
-    critical: "",
-    deceased: "",
-    discharged: "",
-    femaleCases: "",
-    genderUnidentifiedCases: "",
-    id: "",
-    importedCases: "",
-    importedOrLocalUnreportedCases: "",
-    infectionSourceList: "",
-    localTransmissions: "",
-    maleCases: "",
-    nationalityList: "",
-    regulations: "",
-    totalCases: ""
-  });
+function TotalCases({ scrape }) {
+
+  const [totalCases, setTotalCases] = useState(0);
 
   useEffect(() => {
-    axios
-      .get("http://localhost:8080/covid")
-      .then(res => {
-        setCovidData(res.data);
-      }
-      )
-      .catch(err => {
-        console.log(err);
-      }
-      );
-  }, []);
+    if ("id" in scrape) {
+      setTotalCases(scrape.totalCases);
+    }
+  }, [scrape])
 
   return (
     <RootStyle>
       <IconWrapperStyle>
         <Icon icon="akar-icons:circle-plus-fill" width={24} height={24} />
       </IconWrapperStyle>
-      <Typography variant="h3">{fInternationalNumber(covidData.totalCases)}</Typography>
+      <Typography variant="h3">{fInternationalNumber(totalCases)}</Typography>
       <Typography variant="subtitle2" sx={{ opacity: 0.72 }}>
         Total Cases
       </Typography>
     </RootStyle>
   );
 }
+
+const mapStateToProps = (state) => ({
+  scrape: state.scrape.scrapedData
+})
+
+export default connect(mapStateToProps, null)(TotalCases);

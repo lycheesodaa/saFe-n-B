@@ -9,6 +9,8 @@ import { fNumber } from '../../../utils/formatNumber';
 //
 import { BaseOptionChart } from '../../charts';
 
+import { connect } from "react-redux";
+
 // ----------------------------------------------------------------------
 
 const CHART_HEIGHT = 372;
@@ -33,10 +35,17 @@ const ChartWrapperStyle = styled('div')(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 
-export default function GenderDistribution() {
+function GenderDistribution({scrape}) {
   const theme = useTheme();
 
-  const [chartData, setChartData] = useState([])
+  const [chartSeries, setChartSeries] = useState([]);
+
+  useEffect(() => {
+    if ("id" in scrape) {
+      setChartSeries([scrape.maleCases, scrape.femaleCases, scrape.genderUnidentifiedCases]);
+    }
+  }, [scrape])
+
   const chartOptions = {
     colors: [
       theme.palette.primary.main,
@@ -75,25 +84,18 @@ export default function GenderDistribution() {
     }
   };
 
-  useEffect(() => {
-    axios
-      .get("http://localhost:8080/covid")
-      .then(res => {
-        setChartData([res.data.maleCases, res.data.femaleCases, res.data.genderUnidentifiedCases]);
-      }
-      )
-      .catch(err => {
-        console.log(err);
-      }
-      );
-  }, []);
-
   return (
     <Card>
       <CardHeader title="Gender Distribution" />
       <ChartWrapperStyle dir="ltr">
-        <ReactApexChart type="pie" series={chartData} options={chartOptions} height={280} />
+        <ReactApexChart type="pie" series={chartSeries} options={chartOptions} height={280} />
       </ChartWrapperStyle>
     </Card>
   );
 }
+
+const mapStateToProps = (state) => ({
+  scrape: state.scrape.scrapedData
+})
+
+export default connect(mapStateToProps, null)(GenderDistribution);
