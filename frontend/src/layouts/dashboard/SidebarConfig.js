@@ -6,7 +6,7 @@ import fileTextFill from '@iconify/icons-eva/file-text-fill';
 
 const getIcon = (name) => <Icon icon={name} width={22} height={22} />;
 
-const sidebarConfig = [
+var sidebarConfig = [
   {
     title: 'COVID-19 Stats',
     path: '/user/stats',
@@ -21,6 +21,11 @@ const sidebarConfig = [
     title: 'Employee Dashboard',
     path: '/user/employee-dashboard',
     icon: getIcon("bx:bxs-dashboard")
+  },
+  {
+    title: 'Employee Profile',
+    path: '/user/employee-profile',
+    icon: getIcon("gg:profile")
   },
   {
     title: 'Scheduler',

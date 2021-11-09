@@ -42,10 +42,21 @@ const LoginForm = ({ auth, loginEmployee, loginFirm, error }) => {
     }
   }
 
+  function quickLoginFirm() {
+    setEmail("harshitj.2019@sis.smu.edu.sg")
+    setPassword("test123")
+    loginFirm(email, password);
+  }
+
+  function quickLoginEmployee() {
+    setEmail("employee1@email.com")
+    setPassword("test123")
+    loginEmployee(email, password);
+  }
+
   useEffect(() => {
     console.log(auth);
     if (auth.isAuthenticated === true) {
-      alert("successfully logged in");
       navigate("/user/stats");
     }
   }, [auth]);
@@ -116,6 +127,12 @@ const LoginForm = ({ auth, loginEmployee, loginFirm, error }) => {
       </Form.Group>
       <Button block size="lg" variant="success" type="submit" disabled={!validateForm()}>
         Login
+      </Button>
+      <Button block size="lg" variant="success" type="submit" onClick={quickLoginFirm}>
+        Quick Login: firm
+      </Button>
+      <Button block size="lg" variant="success" type="submit" onClick={quickLoginEmployee}>
+        Quick Login: employee
       </Button>
     </Form>
   );

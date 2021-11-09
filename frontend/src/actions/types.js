@@ -13,5 +13,8 @@ export const UPDATE_FAIL = 'UPDATE_FAIL';
 export const PASSWORD_CHANGED = 'PASSWORD_CHANGED';
 export const GET_SCRAPED_DATA = 'GET_SCRAPED_DATA';
 export const GET_EMPLOYEES = 'GET_EMPLOYEES';
+export const GET_EMPLOYEE = 'GET_EMPLOYEE';
+export const ADD_ART = 'ADD_ART';
+export const ADD_TEMPERATURE = 'ADD_TEMPERATURE';
 
 

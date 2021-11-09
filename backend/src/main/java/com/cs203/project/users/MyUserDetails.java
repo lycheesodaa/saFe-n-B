@@ -17,18 +17,21 @@ public class MyUserDetails implements UserDetails {
 	private String email;
 	private String password;
 	private Date dateOfBirth;
+	private boolean isFirm;
 	// private List<GrantedAuthority> authorities;
 
 	public MyUserDetails(Firm firm) {
 		this.email = firm.getEmail();
 		this.password = firm.getPassword();
 		this.dateOfBirth = firm.getRegistrationDate();
+		this.isFirm = true;
 	}
 
 	public MyUserDetails(Employee employee) {
 		this.email = employee.getEmail();
 		this.password = employee.getPassword();
 		this.dateOfBirth = employee.getDateOfBirth();
+		this.isFirm = false;
 	}
 
 	public MyUserDetails() {
@@ -51,6 +54,10 @@ public class MyUserDetails implements UserDetails {
 
 	public Date getDateOfBirth() {
 		return dateOfBirth;
+	}
+	
+	public boolean getIsFirm() {
+		return isFirm;
 	}
 
 	@Override

@@ -40,7 +40,6 @@ const TABLE_HEAD = [
   { id: 'nric', label: 'NRIC/FIN', alignRight: false },
   { id: 'contact', label: 'Contact', alignRight: false },
   { id: 'vaccinated', label: 'Vaccinated', alignRight: false },
-  { id: '' }
 ];
 
 // ----------------------------------------------------------------------
@@ -151,14 +150,6 @@ function EmployeeDashboard({ employees, getEmployeesByFirmEmail, user }) {
           <Typography variant="h4" gutterBottom>
             Employee Dashboard
           </Typography>
-          {/* <Button
-            variant="contained"
-            component={RouterLink}
-            to="#"
-            startIcon={<Icon icon={plusFill} />}
-          >
-            New User
-          </Button> */}
         </Stack>
 
         <Card>
@@ -201,16 +192,11 @@ function EmployeeDashboard({ employees, getEmployeesByFirmEmail, user }) {
                           }}
                         >
                           <TableCell padding="checkbox">
-                            <Checkbox
-                              checked={isItemSelected}
-                              onChange={(event) => handleClick(event, name)}
-                            />
                           </TableCell>
                           <TableCell align="left">{name}</TableCell>
                           <TableCell align="left">{email}</TableCell>
                           <TableCell align="left">{nric}</TableCell>
                           <TableCell align="left">{contact}</TableCell>
-                          {/* <TableCell align="left">{vaccinated ? 'Yes' : 'No'}</TableCell> */}
                           <TableCell align="left">
                             <Label
                               variant="ghost"
@@ -218,10 +204,6 @@ function EmployeeDashboard({ employees, getEmployeesByFirmEmail, user }) {
                             >
                               {sentenceCase(vaccinated ? 'Yes' : 'No')}
                             </Label>
-                          </TableCell>
-
-                          <TableCell align="right">
-                            <UserMoreMenu />
                           </TableCell>
                         </TableRow>
                       );

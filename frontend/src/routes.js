@@ -9,7 +9,8 @@ import DashboardApp from './pages/DashboardApp';
 import Products from './pages/Products';
 import Blog from './pages/Blog';
 import EmployeeDashboard from './pages/EmployeeDashboard';
-import EmployeeProfile from './pages/EmployeeProfile';
+import EmployeeProfileFirm from './pages/EmployeeProfileFirm';
+import EmployeeProfileEmployee from './pages/EmployeeProfileEmployee';
 import NotFound from './pages/Page404';
 import Regulations from './pages/Regulations';
 
@@ -25,7 +26,8 @@ export default function Router() {
         { path: 'stats', element: <DashboardApp /> },
         { path: 'regulations', element: <Regulations /> },
         { path: 'employee-dashboard', element: <EmployeeDashboard /> },
-        { path: 'employee-dashboard/:email', element: <EmployeeProfile /> },
+        { path: 'employee-dashboard/:email', element: <EmployeeProfileFirm /> },
+        { path: 'employee-profile', element: <EmployeeProfileEmployee /> },
         { path: 'scheduler', element: <NotFound /> },
         { path: 'blog', element: <NotFound /> },
         { path: 'forum', element: <NotFound /> }

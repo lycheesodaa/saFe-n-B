@@ -12,6 +12,7 @@ import { MHidden } from '../../components/@material-extend';
 //
 import sidebarConfig from './SidebarConfig';
 import account from '../../_mocks_/account';
+import { connect } from "react-redux";
 
 import img from "../../public/static/mock-images/avatars/avatar_default.jpg";
 
@@ -41,8 +42,19 @@ DashboardSidebar.propTypes = {
   onCloseSidebar: PropTypes.func
 };
 
-export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
+function DashboardSidebar({ isOpenSidebar, onCloseSidebar, user }) {
   const { pathname } = useLocation();
+
+  var sidebarConfigFiltered = sidebarConfig;
+  if (user.isFirm == false) {
+    sidebarConfigFiltered = sidebarConfigFiltered.filter(function (item) {
+      return item.title != "Employee Dashboard"
+    })
+  } else {
+    sidebarConfigFiltered = sidebarConfigFiltered.filter(function (item) {
+      return item.title != "Employee Profile"
+    })
+  }
 
   useEffect(() => {
     if (isOpenSidebar) {
@@ -80,7 +92,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
         </Link>
       </Box>
 
-      <NavSection navConfig={sidebarConfig} />
+      <NavSection navConfig={sidebarConfigFiltered} />
 
       <Box sx={{ flexGrow: 1 }} />
     </Scrollbar>
@@ -117,3 +129,9 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
     </RootStyle>
   );
 }
+
+const mapStateToProps = (state) => ({
+  user: state.auth.user
+})
+
+export default connect(mapStateToProps, null)(DashboardSidebar);
