@@ -115,7 +115,7 @@ public class EmployeeServiceTest {
         String email = "bob@gmail.com";
         Employee emp = new Employee(email, "boblovesnoodles");
         String firmEmail = "saladbar@gmail.com";
-        when(employees.findByEmail(anyString())).thenReturn(emp);
+        when(employees.findByEmail(anyString())).thenReturn(null);
         when(firms.findByEmail(anyString())).thenReturn(null);
 
         Employee result = employeeService.addEmployee(emp, firmEmail);
