@@ -2,8 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { Form, Button, Alert } from "react-bootstrap";
 //login
 import { connect } from "react-redux";
-import { login } from "../../../actions/authActions";
+import { loginEmployee, loginFirm } from "../../../actions/authActions";
 import { useNavigate } from 'react-router-dom';
+import ToggleButton from "react-bootstrap/ToggleButton";
+import ToggleButtonGroup from "react-bootstrap/ToggleButtonGroup";
 import {
   Link,
   Stack,
@@ -15,8 +17,9 @@ import {
 } from '@mui/material';
 // ----------------------------------------------------------------------
 
-const LoginForm = ({ auth, login, error }) => {
+const LoginForm = ({ auth, loginEmployee, loginFirm, error }) => {
   let navigate = useNavigate();
+  const [value, setValue] = React.useState(1);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
@@ -32,7 +35,11 @@ const LoginForm = ({ auth, login, error }) => {
 
   function handleSubmit(event) {
     event.preventDefault();
-    login(email, password);
+    if (value == 1) {
+      loginFirm(email, password);
+    } else {
+      loginEmployee(email, password);
+    }
   }
 
   useEffect(() => {
@@ -77,6 +84,19 @@ const LoginForm = ({ auth, login, error }) => {
           />
         </Stack> */}
         {errorMsg && <Alert variant="danger">{errorMsg}</Alert>}
+        <center>
+          <ToggleButtonGroup
+            name="value"
+            type="radio"
+            value={value}
+            onChange={(val) => {
+              setValue(val)
+            }}
+          >
+            <ToggleButton value={1} variant="outline-primary">Firm</ToggleButton>
+            <ToggleButton value={2} variant="outline-primary">Employee</ToggleButton>
+          </ToggleButtonGroup>
+        </center>
         <Form.Group size="lg" controlId="email">
           <Form.Label>Email</Form.Label>
           <Form.Control
@@ -84,7 +104,7 @@ const LoginForm = ({ auth, login, error }) => {
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-          />
+          />   
         </Form.Group>
         <Form.Group size="lg" controlId="password">
           <Form.Label>Password</Form.Label>
@@ -107,7 +127,8 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = dispatch => {
   return {
-    login: (email, password) => dispatch(login(email, password))
+    loginFirm: (email, password) => dispatch(loginFirm(email, password)),
+    loginEmployee: (email, password) => dispatch(loginEmployee(email, password))
   };
 };
 

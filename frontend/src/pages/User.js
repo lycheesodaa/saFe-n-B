@@ -1,7 +1,7 @@
 import { filter } from 'lodash';
 import { Icon } from '@iconify/react';
 import { sentenceCase } from 'change-case';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import plusFill from '@iconify/icons-eva/plus-fill';
 import { Link as RouterLink } from 'react-router-dom';
 // material
@@ -28,15 +28,18 @@ import SearchNotFound from '../components/SearchNotFound';
 import { UserListHead, UserListToolbar, UserMoreMenu } from '../components/_dashboard/user';
 //
 import USERLIST from '../_mocks_/user';
+import { connect } from 'react-redux';
+import { getEmployeesByFirmEmail } from "../actions/firmActions";
+import { useNavigate } from 'react-router-dom';
 
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
   { id: 'name', label: 'Name', alignRight: false },
-  { id: 'company', label: 'Company', alignRight: false },
-  { id: 'role', label: 'Role', alignRight: false },
-  { id: 'isVerified', label: 'Verified', alignRight: false },
-  { id: 'status', label: 'Status', alignRight: false },
+  { id: 'email', label: 'Email', alignRight: false },
+  { id: 'nric', label: 'NRIC/FIN', alignRight: false },
+  { id: 'contact', label: 'Contact', alignRight: false },
+  { id: 'vaccinated', label: 'Vaccinated', alignRight: false },
   { id: '' }
 ];
 
@@ -71,7 +74,17 @@ function applySortFilter(array, comparator, query) {
   return stabilizedThis.map((el) => el[0]);
 }
 
-export default function User() {
+function User({ employees, getEmployeesByFirmEmail, user }) {
+  let navigate = useNavigate();
+  useEffect(() => {
+    getEmployeesByFirmEmail(user.username)
+  }, [])
+
+  useEffect(() => {
+    if (employees.length > 0) {
+      console.log(employees);
+    }
+  }, [employees])
   const [page, setPage] = useState(0);
   const [order, setOrder] = useState('asc');
   const [selected, setSelected] = useState([]);
@@ -87,7 +100,7 @@ export default function User() {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = USERLIST.map((n) => n.name);
+      const newSelecteds = employees.map((n) => n.name);
       setSelected(newSelecteds);
       return;
     }
@@ -125,27 +138,27 @@ export default function User() {
     setFilterName(event.target.value);
   };
 
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - USERLIST.length) : 0;
+  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - employees.length) : 0;
 
-  const filteredUsers = applySortFilter(USERLIST, getComparator(order, orderBy), filterName);
+  const filteredUsers = applySortFilter(employees, getComparator(order, orderBy), filterName);
 
   const isUserNotFound = filteredUsers.length === 0;
 
   return (
-    <Page title="User | Minimal-UI">
+    <Page title="Employee Dashboard">
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>
-            User
+            Employee Dashboard
           </Typography>
-          <Button
+          {/* <Button
             variant="contained"
             component={RouterLink}
             to="#"
             startIcon={<Icon icon={plusFill} />}
           >
             New User
-          </Button>
+          </Button> */}
         </Stack>
 
         <Card>
@@ -162,7 +175,7 @@ export default function User() {
                   order={order}
                   orderBy={orderBy}
                   headLabel={TABLE_HEAD}
-                  rowCount={USERLIST.length}
+                  rowCount={employees.length}
                   numSelected={selected.length}
                   onRequestSort={handleRequestSort}
                   onSelectAllClick={handleSelectAllClick}
@@ -171,17 +184,21 @@ export default function User() {
                   {filteredUsers
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row) => {
-                      const { id, name, role, status, company, avatarUrl, isVerified } = row;
+                      const { name, email, nric, contact, vaccinated } = row;
                       const isItemSelected = selected.indexOf(name) !== -1;
 
                       return (
                         <TableRow
                           hover
-                          key={id}
+                          key={email}
                           tabIndex={-1}
                           role="checkbox"
                           selected={isItemSelected}
                           aria-checked={isItemSelected}
+                          onClick={() => {
+                            console.log("clicked " + email)
+                            navigate(`/user/employee-dashboard/${email}`);
+                          }}
                         >
                           <TableCell padding="checkbox">
                             <Checkbox
@@ -189,23 +206,17 @@ export default function User() {
                               onChange={(event) => handleClick(event, name)}
                             />
                           </TableCell>
-                          <TableCell component="th" scope="row" padding="none">
-                            <Stack direction="row" alignItems="center" spacing={2}>
-                              <Avatar alt={name} src={avatarUrl} />
-                              <Typography variant="subtitle2" noWrap>
-                                {name}
-                              </Typography>
-                            </Stack>
-                          </TableCell>
-                          <TableCell align="left">{company}</TableCell>
-                          <TableCell align="left">{role}</TableCell>
-                          <TableCell align="left">{isVerified ? 'Yes' : 'No'}</TableCell>
+                          <TableCell align="left">{name}</TableCell>
+                          <TableCell align="left">{email}</TableCell>
+                          <TableCell align="left">{nric}</TableCell>
+                          <TableCell align="left">{contact}</TableCell>
+                          {/* <TableCell align="left">{vaccinated ? 'Yes' : 'No'}</TableCell> */}
                           <TableCell align="left">
                             <Label
                               variant="ghost"
-                              color={(status === 'banned' && 'error') || 'success'}
+                              color={vaccinated ? 'success' : 'error'}
                             >
-                              {sentenceCase(status)}
+                              {sentenceCase(vaccinated ? 'Yes' : 'No')}
                             </Label>
                           </TableCell>
 
@@ -237,7 +248,7 @@ export default function User() {
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
-            count={USERLIST.length}
+            count={employees.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}
@@ -248,3 +259,10 @@ export default function User() {
     </Page>
   );
 }
+
+const mapStateToProps = (state) => ({
+  employees: state.firm.employees,
+  user: state.auth.user
+})
+
+export default connect(mapStateToProps, { getEmployeesByFirmEmail })(User);

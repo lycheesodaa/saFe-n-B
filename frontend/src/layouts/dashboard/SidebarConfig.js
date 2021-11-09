@@ -18,6 +18,11 @@ const sidebarConfig = [
     icon: getIcon("codicon:law")
   },
   {
+    title: 'Employee Dashboard',
+    path: '/user/employee-dashboard',
+    icon: getIcon("bx:bxs-dashboard")
+  },
+  {
     title: 'Scheduler',
     path: '/user/scheduler',
     icon: getIcon("ic:baseline-schedule")

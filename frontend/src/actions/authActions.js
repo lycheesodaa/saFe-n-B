@@ -17,7 +17,7 @@ import { returnErrors, clearErrors } from "./errorActions";
 import Config from 'config';
 // import bcrypt from "bcrypt";
 
-export const login = (email, password) => (dispatch) => {
+export const loginFirm = (email, password) => (dispatch) => {
     // Headers
     const config = {
         headers: {
@@ -27,7 +27,35 @@ export const login = (email, password) => (dispatch) => {
 
     // Request body
     const body = JSON.stringify({ email, password });
-    axios.post(`${Config.apiURL}/accounts/authenticate`, body, config)
+    axios.post(`${Config.apiUrl}/firms/authenticate`, body, config)
+        .then(response => {
+            dispatch(clearErrors());
+            return dispatch({
+                type: LOGIN_SUCCESS,
+                payload: response.data
+            })
+        })
+        .catch(err => {
+            dispatch(
+                returnErrors(err.response.data.message, err.response.status, 'LOGIN_FAIL')
+            );
+            dispatch({
+                type: LOGIN_FAIL
+            });
+        });
+}
+
+export const loginEmployee = (email, password) => (dispatch) => {
+    // Headers
+    const config = {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    };
+
+    // Request body
+    const body = JSON.stringify({ email, password });
+    axios.post(`${Config.apiUrl}/employees/authenticate`, body, config)
         .then(response => {
             dispatch(clearErrors());
             return dispatch({
@@ -55,7 +83,7 @@ export const forgotPassword = (email, password, dateOfBirth) => (dispatch, getSt
             "Content-Type": "application/json"
         }
     }
-    axios.put(`${Config.apiURL}/accounts/`, body, config)
+    axios.put(`${Config.apiUrl}/accounts/`, body, config)
         .then(res => {
             dispatch(clearErrors());
             return dispatch({
@@ -70,7 +98,7 @@ export const forgotPassword = (email, password, dateOfBirth) => (dispatch, getSt
 
 }
 
-export const createAccount = (email, password, dateOfBirth) => dispatch => {
+export const createFirmAccount = (name, email, registrationDate, typeOfOutlet, contact, password) => dispatch => {
     //Headers
     const config = {
         headers: {
@@ -78,9 +106,37 @@ export const createAccount = (email, password, dateOfBirth) => dispatch => {
         }
     }
 
-    const body = JSON.stringify({ email, password, dateOfBirth });
+    const body = JSON.stringify({ name, email, registrationDate, typeOfOutlet, contact, password });
 
-    axios.post(`${Config.apiURL}/accounts/`, body, config)
+    axios.post(`${Config.apiUrl}/firms/`, body, config)
+        .then(res => {
+            dispatch(clearErrors());
+            return dispatch({
+                type: REGISTER_SUCCESS,
+                payload: res.data
+            })
+        })
+        .catch(err => {
+            console.log(err);
+            console.log(Config.apiUrl);
+            dispatch(returnErrors(err.response.data.message, err.response.status, 'REGISTER_FAIL'))
+            dispatch({
+                type: REGISTER_FAIL
+            })
+        })
+}
+
+export const createEmployeeAccount = (name, firmEmail, email, nric, dateOfBirth, address, contact, password) => dispatch => {
+    //Headers
+    const config = {
+        headers: {
+            "Content-Type": "application/json"
+        }
+    }
+
+    const body = JSON.stringify({ name, email, nric, dateOfBirth, address, contact, password });
+
+    axios.post(`${Config.apiUrl}/employees/${firmEmail}`, body, config)
         .then(res => {
             dispatch(clearErrors());
             return dispatch({

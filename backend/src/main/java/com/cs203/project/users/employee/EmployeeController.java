@@ -66,9 +66,15 @@ public class EmployeeController {
 		return employeeService.getEmployeeByEmail(email);
 	}
 	
-	@RequestMapping(method=RequestMethod.POST, value="/employees")
-	public ResponseEntity<?> addEmployee(@RequestBody Employee Employee) {
-		Employee savedEmployee = employeeService.addEmployee(Employee);
+	@RequestMapping("/employees/firm/{email}")
+	public ResponseEntity<?> getEmployees(@PathVariable String email) {
+		return employeeService.getEmployeesByFirmEmail(email);
+	}
+	
+	
+	@RequestMapping(method=RequestMethod.POST, value="/employees/firm/{email}")
+	public ResponseEntity<?> addEmployee(@RequestBody Employee Employee, @PathVariable String email) {
+		Employee savedEmployee = employeeService.addEmployee(Employee, email);
 		if (savedEmployee != null) {
 			final MyUserDetails userDetails = (MyUserDetails) userDetailsService
 					.loadUserByUsername(savedEmployee.getEmail());

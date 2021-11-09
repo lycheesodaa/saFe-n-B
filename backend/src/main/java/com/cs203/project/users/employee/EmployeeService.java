@@ -6,6 +6,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.cs203.project.users.firm.Firm;
+import com.cs203.project.users.firm.FirmRepository;
+
 
 @Service
 public class EmployeeService {
@@ -13,11 +16,13 @@ public class EmployeeService {
 	private EmployeeRepository employeeRepository;
 	private TemperatureRepository temperatureRepository;
 	private ARTRepository artRepository;
+	private FirmRepository firmRepository;
 	
-	public EmployeeService(EmployeeRepository employeeRepository, TemperatureRepository temperatureRepository, ARTRepository artRepository) {
+	public EmployeeService(EmployeeRepository employeeRepository, TemperatureRepository temperatureRepository, ARTRepository artRepository, FirmRepository firmRepository) {
 		this.employeeRepository = employeeRepository;
 		this.temperatureRepository = temperatureRepository;
 		this.artRepository = artRepository;
+		this.firmRepository = firmRepository;
 	}
 	
 	public ResponseEntity<List<Employee>> getAllEmployees() {
@@ -33,11 +38,24 @@ public class EmployeeService {
 		return ResponseEntity.ok(employee);
 	}
 	
-	public Employee addEmployee(Employee employee) {
+	public ResponseEntity<List<Employee>> getEmployeesByFirmEmail(String email) {
+		List<Employee> employees = employeeRepository.findByFirmEmail(email);
+		if (employees == null) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+		}
+		return ResponseEntity.ok(employees);
+	}
+	
+	public Employee addEmployee(Employee employee, String email) {
 		HttpStatus employeeExists = getEmployeeByEmail(employee.getEmail()).getStatusCode();
 		if (employeeExists == HttpStatus.OK) {
 			return null;
 		}
+		Firm firm = firmRepository.findByEmail(email);
+		if (firm == null) {
+			return null;
+		}
+		employee.setFirm(firm);
 		Employee savedEmployee = employeeRepository.save(employee.hashingPassword());
 		return savedEmployee;
 	}

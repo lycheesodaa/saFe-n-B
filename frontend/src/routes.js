@@ -23,6 +23,7 @@ export default function Router() {
         { element: <Navigate to="/user/stats" replace /> },
         { path: 'stats', element: <DashboardApp /> },
         { path: 'regulations', element: <Regulations /> },
+        { path: 'employee-dashboard', element: <User /> },
         { path: 'scheduler', element: <NotFound /> },
         { path: 'blog', element: <NotFound /> },
         { path: 'forum', element: <NotFound /> }
