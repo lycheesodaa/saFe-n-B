@@ -174,7 +174,7 @@ function EmployeeProfileEmployee({ employee, getEmployee, addArt, addTemperature
                     >
                         Add ART
                     </Button>
-                    <Modal isOpen={modalART} toggle={handleToggleART}>
+                    <Modal isOpen={modalART} toggle={handleToggleART} centered>
                         <ModalHeader toggle={handleToggleART}>Add ART </ModalHeader>
                         <ModalBody>
                             <Form>
@@ -226,7 +226,7 @@ function EmployeeProfileEmployee({ employee, getEmployee, addArt, addTemperature
                     >
                         Add Temperature
                     </Button>
-                    <Modal isOpen={modalTemp} toggle={handleToggleTemp}>
+                    <Modal isOpen={modalTemp} toggle={handleToggleTemp} centered>
                         <ModalHeader toggle={handleToggleTemp}>Add Temperature </ModalHeader>
                         <ModalBody>
                             <Form>
