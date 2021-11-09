@@ -30,8 +30,8 @@ public class FirmService {
 	}
 	
 	public Firm addFirm(Firm firm) {
-		HttpStatus firmExists = getFirmByEmail(firm.getEmail()).getStatusCode();
-		if (firmExists == HttpStatus.OK) {
+		Firm firmExists = firmRepository.findByEmail(firm.getEmail());
+		if (firmExists != null) {
 			return null;
 		}
 		Firm savedfirm = firmRepository.save(firm.hashingPassword());
@@ -39,8 +39,8 @@ public class FirmService {
 	}
 	
 	public ResponseEntity<Firm> updateFirm(Firm firm) {
-		HttpStatus firmExists = getFirmByEmail(firm.getEmail()).getStatusCode();
-		if (firmExists == HttpStatus.NOT_FOUND) {
+		Firm firmExists = firmRepository.findByEmail(firm.getEmail());
+		if (firmExists == null) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 		}
 		Firm updatedfirm = firmRepository.save(firm.hashingPassword());
@@ -48,8 +48,8 @@ public class FirmService {
 	}
 	
 	public ResponseEntity<Void> deleteFirm(String email) {
-		HttpStatus firmExists = getFirmByEmail(email).getStatusCode();
-		if (firmExists == HttpStatus.NOT_FOUND) {
+		Firm firmExists = firmRepository.findByEmail(email);
+		if (firmExists == null) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 		}
 		firmRepository.deleteById(email);

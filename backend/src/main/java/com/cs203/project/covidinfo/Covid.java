@@ -40,74 +40,89 @@ public class Covid {
     @Column(name = "covid_id")
     private Long id;
 
-
-    @Column(nullable = false, updatable = false)  
+    @Column(nullable = false, updatable = false)
     @CreationTimestamp
     private Date created_at;
-    
+
     @NotNull
-    @Type(type="text")
+    @Type(type = "text")
     private String regulations;
-    
-    
+
     @PositiveOrZero
     @NotNull
     private long totalCases;
-    
+
     @PositiveOrZero
     @NotNull
     private long activeCases;
-    
+
     @PositiveOrZero
     @NotNull
     private long deceased;
-    
+
     @PositiveOrZero
     @NotNull
     private long discharged;
-    
+
     @PositiveOrZero
     @NotNull
     private long critical;
-    
+
     @PositiveOrZero
     @NotNull
     private long maleCases;
-    
+
     @PositiveOrZero
     @NotNull
     private long femaleCases;
-    
+
     @PositiveOrZero
     @NotNull
     private long genderUnidentifiedCases;
-    
+
     @PositiveOrZero
     @NotNull
     private long localTransmissions;
-    
+
     @PositiveOrZero
     @NotNull
     private long importedCases;
-    
+
     @PositiveOrZero
     @NotNull
     private long importedOrLocalUnreportedCases;
-    
+
     @PositiveOrZero
     @NotNull
     private long averageAge;
-    
-    @OneToMany(mappedBy="covid", orphanRemoval = true, cascade = CascadeType.ALL)
+
+    @OneToMany(mappedBy = "covid", orphanRemoval = true, cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<Nationality> nationalityList;
-    
-    @OneToMany(mappedBy="covid", orphanRemoval = true, cascade = CascadeType.ALL)
+
+    @OneToMany(mappedBy = "covid", orphanRemoval = true, cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<InfectionSource> infectionSourceList;
-    
-    @OneToMany(mappedBy="covid", orphanRemoval = true, cascade = CascadeType.ALL)
+
+    @OneToMany(mappedBy = "covid", orphanRemoval = true, cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<Cluster> clusterList;
-        
+
+    public Covid(String regulations, long totalCases, long activeCases, long deceased, long discharged, long critical,
+            long maleCases, long femaleCases, long genderUnidentifiedCases, long localTransmissions, long importedCases,
+            long importedOrLocalUnreportedCases, long averageAge) {
+        this.regulations = regulations;
+        this.totalCases = totalCases;
+        this.activeCases = activeCases;
+        this.deceased = deceased;
+        this.discharged = discharged;
+        this.critical = critical;
+        this.maleCases = maleCases;
+        this.femaleCases = femaleCases;
+        this.genderUnidentifiedCases = genderUnidentifiedCases;
+        this.localTransmissions = localTransmissions;
+        this.importedCases = importedCases;
+        this.importedOrLocalUnreportedCases = importedOrLocalUnreportedCases;
+        this.averageAge = averageAge;
+    }
 }

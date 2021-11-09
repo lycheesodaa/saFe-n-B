@@ -58,7 +58,7 @@ const LoginForm = ({ auth, loginEmployee, loginFirm, error }) => {
   }, [error]);
 
   return (
-      <Form onSubmit={handleSubmit}>
+    <Form onSubmit={handleSubmit}>
       {/* <Stack spacing={3}>
           <TextField
             fullWidth
@@ -83,41 +83,41 @@ const LoginForm = ({ auth, loginEmployee, loginFirm, error }) => {
             // }}
           />
         </Stack> */}
-        {errorMsg && <Alert variant="danger">{errorMsg}</Alert>}
-        <center>
-          <ToggleButtonGroup
-            name="value"
-            type="radio"
-            value={value}
-            onChange={(val) => {
-              setValue(val)
-            }}
-          >
-            <ToggleButton value={1} variant="outline-primary">Firm</ToggleButton>
-            <ToggleButton value={2} variant="outline-primary">Employee</ToggleButton>
-          </ToggleButtonGroup>
-        </center>
-        <Form.Group size="lg" controlId="email">
-          <Form.Label>Email</Form.Label>
-          <Form.Control
-            autoFocus
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />   
-        </Form.Group>
-        <Form.Group size="lg" controlId="password">
-          <Form.Label>Password</Form.Label>
-          <Form.Control
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </Form.Group>
-        <Button block size="lg" variant="success" type="submit" disabled={!validateForm()}>
-          Login
-        </Button>
-      </Form>
+      {errorMsg && <Alert variant="danger">{errorMsg}</Alert>}
+      <center>
+        <ToggleButtonGroup
+          name="value"
+          type="radio"
+          value={value}
+          onChange={(val) => {
+            setValue(val)
+          }}
+        >
+          <ToggleButton value={1} variant="outline-primary">Firm</ToggleButton>
+          <ToggleButton value={2} variant="outline-primary">Employee</ToggleButton>
+        </ToggleButtonGroup>
+      </center>
+      <Form.Group size="lg" controlId="email">
+        <Form.Label>Email</Form.Label>
+        <Form.Control
+          autoFocus
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+      </Form.Group>
+      <Form.Group size="lg" controlId="password">
+        <Form.Label>Password</Form.Label>
+        <Form.Control
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+      </Form.Group>
+      <Button block size="lg" variant="success" type="submit" disabled={!validateForm()}>
+        Login
+      </Button>
+    </Form>
   );
 }
 const mapStateToProps = (state) => ({
@@ -133,3 +133,4 @@ const mapDispatchToProps = dispatch => {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginForm);
+

@@ -12,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import com.cs203.project.users.firm.Firm;
 import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -33,7 +34,8 @@ public class Employee {
 	
 	@Id
 	private String email;
-	
+
+	@NotNull
 	private String password;
 	
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")  
@@ -63,10 +65,14 @@ public class Employee {
 	private Firm firm;
 	
 	
+	public Employee(String email, String password) {
+		this.email = email;
+		this.password = password;
+	}
+	
 	public void addTemperature(Temperature temperature) {
 		this.tempList.add(temperature);
 	}
-	
 	
 	public Employee hashingPassword(){
         String hashedPassword = Base64.getEncoder().encodeToString(this.getPassword().getBytes());
@@ -74,6 +80,4 @@ public class Employee {
         return this;
     }
 
-	
-	
 }

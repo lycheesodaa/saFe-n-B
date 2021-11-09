@@ -1,6 +1,5 @@
 package com.cs203.project.users.employee;
 
-import java.time.LocalDate;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -39,4 +38,8 @@ public class ART {
 	@JoinColumn(name="employee_id")
 	@JsonBackReference
 	private Employee employee;
+
+    public ART(boolean result) {
+        this.result = result;
+    }
 }
