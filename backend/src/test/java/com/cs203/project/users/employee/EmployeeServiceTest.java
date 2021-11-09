@@ -12,6 +12,9 @@ import static org.mockito.Mockito.when;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.cs203.project.users.firm.Firm;
+import com.cs203.project.users.firm.FirmRepository;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -31,6 +34,9 @@ public class EmployeeServiceTest {
 
     @Mock
 	private ARTRepository arts;
+
+    @Mock
+    private FirmRepository firms;
 
     @InjectMocks
     EmployeeService employeeService;
@@ -77,13 +83,17 @@ public class EmployeeServiceTest {
     void addEmployee_ReturnEmployee() {
         String email = "bob@gmail.com";
         Employee emp = new Employee(email, "boblovesnoodles");
+        String firmEmail = "saladbar@gmail.com";
+        Firm firm = new Firm(email, "saladbarney");
         when(employees.findByEmail(anyString())).thenReturn(null);
+        when(firms.findByEmail(anyString())).thenReturn(firm);
         when(employees.save(any(Employee.class))).thenReturn(emp);
 
-        Employee result = employeeService.addEmployee(emp);
+        Employee result = employeeService.addEmployee(emp, firmEmail);
 
         assertNotNull(result);
         verify(employees).findByEmail(email);
+        verify(firms).findByEmail(firmEmail);
         verify(employees).save(emp);
     }
 
@@ -91,12 +101,28 @@ public class EmployeeServiceTest {
     void addEmployee_Exists_ReturnNull() {
         String email = "bob@gmail.com";
         Employee emp = new Employee(email, "boblovesnoodles");
+        String firmEmail = "saladbar@gmail.com";
         when(employees.findByEmail(anyString())).thenReturn(emp);
 
-        Employee result = employeeService.addEmployee(emp);
+        Employee result = employeeService.addEmployee(emp, firmEmail);
 
         assertNull(result);
         verify(employees).findByEmail(email);
+    }
+
+    @Test
+    void addEmployee_NoFirmExists_ReturnNull() {
+        String email = "bob@gmail.com";
+        Employee emp = new Employee(email, "boblovesnoodles");
+        String firmEmail = "saladbar@gmail.com";
+        when(employees.findByEmail(anyString())).thenReturn(null);
+        when(firms.findByEmail(anyString())).thenReturn(null);
+
+        Employee result = employeeService.addEmployee(emp, firmEmail);
+
+        assertNull(result);
+        verify(employees).findByEmail(email);
+        verify(firms).findByEmail(firmEmail);
     }
 
     @Test

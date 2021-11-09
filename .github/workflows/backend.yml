@@ -25,7 +25,7 @@ jobs:
         uses: mirromutth/mysql-action@v1.1
         with:
           # The port of host
-          host port: 8081
+          host port: 8889
           # MYSQL_ROOT_PASSWORD - root superuser password
           mysql root password: root
           # MYSQL_DATABASE - name for the default database that is created
