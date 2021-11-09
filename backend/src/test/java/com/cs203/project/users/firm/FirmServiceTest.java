@@ -45,8 +45,8 @@ public class FirmServiceTest {
     @Test
     void getFirm_ReturnFirm() {
         String email = "saladbar@gmail.com";
-        Firm emp = new Firm(email, "saladbarney");
-        when(firms.findByEmail(email)).thenReturn(emp);
+        Firm firm = new Firm(email, "saladbarney");
+        when(firms.findByEmail(email)).thenReturn(firm);
 
         ResponseEntity<Firm> result = firmService.getFirmByEmail(email);
 
@@ -69,24 +69,24 @@ public class FirmServiceTest {
     @Test
     void addFirm_ReturnFirm() {
         String email = "saladbar@gmail.com";
-        Firm emp = new Firm(email, "saladbarney");
+        Firm firm = new Firm(email, "saladbarney");
         when(firms.findByEmail(anyString())).thenReturn(null);
-        when(firms.save(any(Firm.class))).thenReturn(emp);
+        when(firms.save(any(Firm.class))).thenReturn(firm);
 
-        Firm result = firmService.addFirm(emp);
+        Firm result = firmService.addFirm(firm);
 
         assertNotNull(result);
         verify(firms).findByEmail(email);
-        verify(firms).save(emp);
+        verify(firms).save(firm);
     }
 
     @Test
     void addFirm_Exists_ReturnNull() {
         String email = "saladbar@gmail.com";
-        Firm emp = new Firm(email, "saladbarney");
-        when(firms.findByEmail(anyString())).thenReturn(emp);
+        Firm firm = new Firm(email, "saladbarney");
+        when(firms.findByEmail(anyString())).thenReturn(firm);
 
-        Firm result = firmService.addFirm(emp);
+        Firm result = firmService.addFirm(firm);
 
         assertNull(result);
         verify(firms).findByEmail(email);
@@ -95,10 +95,10 @@ public class FirmServiceTest {
     @Test
     void updateFirm_ReturnFirm() {
         String email = "saladbar@gmail.com";
-        Firm emp = new Firm(email, "saladbarney");
+        Firm firm = new Firm(email, "saladbarney");
         Firm updated = new Firm(email, "saladbarbells");
 
-        when(firms.findByEmail(anyString())).thenReturn(emp);
+        when(firms.findByEmail(anyString())).thenReturn(firm);
         when(firms.save(any(Firm.class))).thenReturn(updated);
 
         ResponseEntity<Firm> result = firmService.updateFirm(updated);
