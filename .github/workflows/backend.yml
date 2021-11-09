@@ -19,6 +19,17 @@ jobs:
         with:
           java-version: '11'
           distribution: temurin
+      - name: Setup MySQL
+        # You may pin to the exact commit or the version.
+        # uses: mirromutth/mysql-action@de1fba8b3f90ce8db80f663a7043be3cf3231248
+        uses: mirromutth/mysql-action@v1.1
+        with:
+          # The port of host
+          host port: 8081
+          # MYSQL_ROOT_PASSWORD - root superuser password
+          mysql root password: root
+          # MYSQL_DATABASE - name for the default database that is created
+          mysql database: cs203
       #Set up Maven cache
       - name: Cache Maven packages
         #This action allows caching dependencies and build outputs to improve workflow execution time.
