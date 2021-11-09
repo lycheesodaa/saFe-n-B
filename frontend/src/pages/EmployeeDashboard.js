@@ -74,7 +74,7 @@ function applySortFilter(array, comparator, query) {
   return stabilizedThis.map((el) => el[0]);
 }
 
-function User({ employees, getEmployeesByFirmEmail, user }) {
+function EmployeeDashboard({ employees, getEmployeesByFirmEmail, user }) {
   let navigate = useNavigate();
   useEffect(() => {
     getEmployeesByFirmEmail(user.username)
@@ -265,4 +265,4 @@ const mapStateToProps = (state) => ({
   user: state.auth.user
 })
 
-export default connect(mapStateToProps, { getEmployeesByFirmEmail })(User);
+export default connect(mapStateToProps, { getEmployeesByFirmEmail })(EmployeeDashboard);
