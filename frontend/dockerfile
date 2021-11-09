@@ -5,4 +5,4 @@ COPY package.json ./
 RUN npm install
 RUN npx webpack
 COPY . .
-RUN npm run build 
+RUN npm run build
