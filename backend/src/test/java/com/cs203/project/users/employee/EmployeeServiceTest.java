@@ -122,6 +122,7 @@ public class EmployeeServiceTest {
 
         assertNull(result);
         verify(employees).findByEmail(email);
+        verify(firms).findByEmail(firmEmail);
     }
 
     @Test
