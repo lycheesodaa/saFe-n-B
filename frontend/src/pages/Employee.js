@@ -1,7 +1,7 @@
 import { filter } from 'lodash';
 import { Icon } from '@iconify/react';
 import { sentenceCase } from 'change-case';
-import React, { useState, useEffect } from "react";
+import { useEffect, useState } from 'react';
 import plusFill from '@iconify/icons-eva/plus-fill';
 import { Link as RouterLink } from 'react-router-dom';
 // material
@@ -27,16 +27,19 @@ import Scrollbar from '../components/Scrollbar';
 import SearchNotFound from '../components/SearchNotFound';
 import { UserListHead, UserListToolbar, UserMoreMenu } from '../components/_dashboard/user';
 //
-import axios from "axios";
-// import USERLIST from '../_mocks_/user';
+import USERLIST from '../_mocks_/user';
+import { connect } from 'react-redux';
+import { getEmployeesByFirmEmail } from "../actions/firmActions";
+import { useNavigate } from 'react-router-dom';
 
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
   { id: 'name', label: 'Name', alignRight: false },
-  { id: 'lastART', label: 'Last ART Date', alignRight: false },
-  { id: 'lastARTStatus', label: 'ART Status', alignRight: false },
-  { id: 'vaccinated', label: 'Vaccination Status', alignRight: false },
+  { id: 'email', label: 'Email', alignRight: false },
+  { id: 'nric', label: 'NRIC/FIN', alignRight: false },
+  { id: 'contact', label: 'Contact', alignRight: false },
+  { id: 'vaccinated', label: 'Vaccinated', alignRight: false },
   { id: '' }
 ];
 
@@ -71,48 +74,23 @@ function applySortFilter(array, comparator, query) {
   return stabilizedThis.map((el) => el[0]);
 }
 
-// added this
-function getLatestART(employees) {
-  const ARTs = employees.ARTList;
-  return ARTs[ARTs.length - 1];
-}
+function User({ employees, getEmployeesByFirmEmail, user }) {
+  let navigate = useNavigate();
+  useEffect(() => {
+    getEmployeesByFirmEmail(user.username)
+  }, [])
 
-export default function Employee() {
+  useEffect(() => {
+    if (employees.length > 0) {
+      console.log(employees);
+    }
+  }, [employees])
   const [page, setPage] = useState(0);
   const [order, setOrder] = useState('asc');
   const [selected, setSelected] = useState([]);
   const [orderBy, setOrderBy] = useState('name');
   const [filterName, setFilterName] = useState('');
   const [rowsPerPage, setRowsPerPage] = useState(5);
-
-  // const [employees, setEmployees] = useState({
-  //   id: "",
-  //   name: "",
-  //   dob: "",
-  //   password: "",
-  //   nric: "",
-  //   address: "",
-  //   contact: "",
-  //   vaccinated: "",
-  //   ARTList: "",
-  //   temperatureList: ""
-  // });
-
-  // ! not sure about this one
-  const employees = () => {
-    JSON.parse(localStorage.getItem('user')).employeeList
-  };
-
-  // useEffect(() => {
-  //   axios
-  //     .get("http://localhost:8080/firms/" + )
-  //     .then(res => {
-  //       setEmployees(res.data.employeeList);
-  //     })
-  //     .catch(err => {
-  //       console.log(err);
-  //     });
-  // }, [] );
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -162,25 +140,25 @@ export default function Employee() {
 
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - employees.length) : 0;
 
-  const filteredEmployees = applySortFilter(employees, getComparator(order, orderBy), filterName);
+  const filteredUsers = applySortFilter(employees, getComparator(order, orderBy), filterName);
 
-  const isEmployeeNotFound = filteredEmployees.length === 0;
+  const isUserNotFound = filteredUsers.length === 0;
 
   return (
-    <Page title="User | Minimal-UI">
+    <Page title="Employee Dashboard">
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>
-            User
+            Employee Dashboard
           </Typography>
-          <Button
+          {/* <Button
             variant="contained"
             component={RouterLink}
             to="#"
             startIcon={<Icon icon={plusFill} />}
           >
-            New Employee
-          </Button>
+            New User
+          </Button> */}
         </Stack>
 
         <Card>
@@ -203,21 +181,24 @@ export default function Employee() {
                   onSelectAllClick={handleSelectAllClick}
                 />
                 <TableBody>
-                  {filteredEmployees
+                  {filteredUsers
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row) => {
-                      const { id, name, vaccinated, ARTList } = row;
+                      const { name, email, nric, contact, vaccinated } = row;
                       const isItemSelected = selected.indexOf(name) !== -1;
-                      const latestART = getLatestART(ARTList);
 
                       return (
                         <TableRow
                           hover
-                          key={id}
+                          key={email}
                           tabIndex={-1}
                           role="checkbox"
                           selected={isItemSelected}
                           aria-checked={isItemSelected}
+                          onClick={() => {
+                            console.log("clicked " + email)
+                            navigate(`/user/employee-dashboard/${email}`);
+                          }}
                         >
                           <TableCell padding="checkbox">
                             <Checkbox
@@ -225,30 +206,17 @@ export default function Employee() {
                               onChange={(event) => handleClick(event, name)}
                             />
                           </TableCell>
-                          <TableCell component="th" scope="row" padding="none">
-                            <Stack direction="row" alignItems="center" spacing={2}>
-                              {/* <Avatar alt={name} src={avatarUrl} /> */}
-                              <Typography variant="subtitle2" noWrap>
-                                {name}
-                              </Typography>
-                            </Stack>
-                          </TableCell>
-                          {/* <TableCell align="left">{company}</TableCell> */}
-                          <TableCell align="left">{latestART.date}</TableCell>
+                          <TableCell align="left">{name}</TableCell>
+                          <TableCell align="left">{email}</TableCell>
+                          <TableCell align="left">{nric}</TableCell>
+                          <TableCell align="left">{contact}</TableCell>
+                          {/* <TableCell align="left">{vaccinated ? 'Yes' : 'No'}</TableCell> */}
                           <TableCell align="left">
                             <Label
                               variant="ghost"
-                              color={(latestART.result  === 'negative' && 'error') || 'success'}
+                              color={vaccinated ? 'success' : 'error'}
                             >
-                              {sentenceCase(latestART.result)}
-                            </Label>
-                          </TableCell>
-                          <TableCell align="left">
-                            <Label
-                              variant="ghost"
-                              color={(vaccinated === false && 'error') || 'success'}
-                            >
-                              {sentenceCase(vaccinated)}
+                              {sentenceCase(vaccinated ? 'Yes' : 'No')}
                             </Label>
                           </TableCell>
 
@@ -264,7 +232,7 @@ export default function Employee() {
                     </TableRow>
                   )}
                 </TableBody>
-                {isEmployeeNotFound && (
+                {isUserNotFound && (
                   <TableBody>
                     <TableRow>
                       <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
@@ -291,3 +259,10 @@ export default function Employee() {
     </Page>
   );
 }
+
+const mapStateToProps = (state) => ({
+  employees: state.firm.employees,
+  user: state.auth.user
+})
+
+export default connect(mapStateToProps, { getEmployeesByFirmEmail })(User);

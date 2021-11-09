@@ -8,7 +8,7 @@ import Register from './pages/Register';
 import DashboardApp from './pages/DashboardApp';
 import Products from './pages/Products';
 import Blog from './pages/Blog';
-import Employee from './pages/Employee';
+import User from './pages/User';
 import NotFound from './pages/Page404';
 import Regulations from './pages/Regulations';
 
@@ -23,7 +23,7 @@ export default function Router() {
         { element: <Navigate to="/user/stats" replace /> },
         { path: 'stats', element: <DashboardApp /> },
         { path: 'regulations', element: <Regulations /> },
-        { path: 'employees', element: <Employee /> },
+        { path: 'employee-dashboard', element: <User /> },
         { path: 'scheduler', element: <NotFound /> },
         { path: 'blog', element: <NotFound /> },
         { path: 'forum', element: <NotFound /> }
