@@ -10,4 +10,4 @@ WORKDIR /app
 COPY pom.xml /app
 COPY src /app/src
 
-RUN mvn spring-boot:build-image
+RUN mvn spring-boot:build-image 
