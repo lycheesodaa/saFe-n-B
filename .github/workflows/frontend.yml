@@ -1,0 +1,60 @@
+name: CI/CD for Frontend
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+    paths: 
+      - 'frontend/**'
+  pull_request:
+    branches: [ main ]
+    paths: 
+      - 'frontend/**'
+
+defaults:
+  run:
+    working-directory: frontend
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [12.x]
+    
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+        
+    - name: Cache dependencies
+      uses: actions/cache@v2
+      with:
+        path: |
+          **/node_modules
+        key: ${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
+
+    - name: Install dependencies
+      run: |
+        npm install
+        npx webpack
+        
+    - name: Run tests
+      run: npm test
+
+    - name: Build
+      run: npm run build
+
+    - name: Build and push Docker image
+      id: docker_build
+      uses: docker/build-push-action@v2
+      with:
+        push: true
+        tags: ${{ secrets.DOCKER_HUB_USERNAME }}/safe-n-b-frontend:latest
+
+    - name: Image digest
+      run: echo ${{ steps.docker_build.outputs.digest }}
