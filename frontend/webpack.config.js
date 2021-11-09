@@ -52,7 +52,15 @@ module.exports = {
         favicon: './src/public/favicon/favicon-32x32.png',
     })],
     devServer: {
-        historyApiFallback: true
+        historyApiFallback: true,
+        // port: 3000,
+        // contentBase: './src',
+        // // watchOptions: {
+        // //     poll: true
+        // // },
+        // inline: true,
+        // hot: true
+        // hotOnly: true
     },
     externals: {
         // global app config object
