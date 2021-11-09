@@ -1,11 +1,15 @@
-name: NodeJS with Webpack
+name: CI/CD for Frontend
 
 on:
   workflow_dispatch:
   push:
+    branches: [ main ]
+    paths: 
+      - 'frontend/**'
   pull_request:
     branches: [ main ]
-    paths: 'frontend/**'
+    paths: 
+      - 'frontend/**'
 
 defaults:
   run:
@@ -17,7 +21,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [12.x, 14.x, 16.x]
+        node-version: [12.x]
     
     steps:
     - uses: actions/checkout@v2
@@ -44,3 +48,13 @@ jobs:
 
     - name: Build
       run: npm run build
+
+    - name: Build and push Docker image
+      id: docker_build
+      uses: docker/build-push-action@v2
+      with:
+        push: true
+        tags: ${{ secrets.DOCKER_HUB_USERNAME }}/safe-n-b-frontend:latest
+
+    - name: Image digest
+      run: echo ${{ steps.docker_build.outputs.digest }}
