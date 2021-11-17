@@ -4,6 +4,7 @@ import java.io.IOException;
 // import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
+import javax.annotation.PostConstruct;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -39,7 +40,7 @@ public class CovidScraper {
 
 	// second, minute, hour, day, month, weekday
 	@Scheduled(cron = "0 0 0 * * *")
-	// @PostConstruct
+	@PostConstruct
 	public void test() {
 		System.out.println("Starting web scraping");
 		try {

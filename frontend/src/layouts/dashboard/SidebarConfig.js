@@ -27,21 +27,21 @@ var sidebarConfig = [
     path: '/user/employee-profile',
     icon: getIcon("gg:profile")
   },
-  {
-    title: 'Scheduler',
-    path: '/user/scheduler',
-    icon: getIcon("ic:baseline-schedule")
-  },
-  {
-    title: 'Blog',
-    path: '/user/blog',
-    icon: getIcon(fileTextFill)
-  },
-  {
-    title: 'Forum',
-    path: '/user/forum',
-    icon: getIcon("carbon:forum")
-  }
+  // {
+  //   title: 'Scheduler',
+  //   path: '/user/scheduler',
+  //   icon: getIcon("ic:baseline-schedule")
+  // },
+  // {
+  //   title: 'Blog',
+  //   path: '/user/blog',
+  //   icon: getIcon(fileTextFill)
+  // },
+  // {
+  //   title: 'Forum',
+  //   path: '/user/forum',
+  //   icon: getIcon("carbon:forum")
+  // }
   // {
   //   title: 'Not found',
   //   path: '/404',

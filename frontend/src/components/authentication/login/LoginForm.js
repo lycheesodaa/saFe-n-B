@@ -128,12 +128,7 @@ const LoginForm = ({ auth, loginEmployee, loginFirm, error }) => {
       <Button block size="lg" variant="success" type="submit" disabled={!validateForm()}>
         Login
       </Button>
-      <Button block size="lg" variant="success" type="submit" onClick={quickLoginFirm}>
-        Quick Login: firm
-      </Button>
-      <Button block size="lg" variant="success" type="submit" onClick={quickLoginEmployee}>
-        Quick Login: employee
-      </Button>
+  
     </Form>
   );
 }

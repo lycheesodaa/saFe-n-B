@@ -24,6 +24,7 @@ import com.cs203.project.util.JwtUtil;
 
 @CrossOrigin()
 @RestController
+@RequestMapping("/api")
 public class EmployeeController {
 	
 	private MyUserDetailsService userDetailsService;

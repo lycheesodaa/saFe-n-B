@@ -22,7 +22,8 @@ import com.cs203.project.util.AuthenticationResponse;
 import com.cs203.project.util.JwtUtil;
 
 @CrossOrigin()
-@RestController
+@RestController()
+@RequestMapping("/api")
 public class FirmController {
 
 	private MyUserDetailsService userDetailsService;

@@ -42,7 +42,6 @@ function AccountPopover({ auth, logoutUser }) {
   const navigate = useNavigate();
   function logoutClick() {
     logoutUser();
-    alert("logged out");
     navigate("/login");
   }
   const anchorRef = useRef(null);
