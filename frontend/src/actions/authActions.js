@@ -23,11 +23,12 @@ export const loginFirm = (email, password) => (dispatch) => {
             'Content-Type': 'application/json'
         }
     };
-
+    console.log("in login firm")
     // Request body
     const body = JSON.stringify({ email, password });
     axios.post(`${Config.apiUrl}/firms/authenticate`, body, config)
         .then(response => {
+            console.log("response")
             dispatch(clearErrors());
             return dispatch({
                 type: LOGIN_SUCCESS,
@@ -35,6 +36,8 @@ export const loginFirm = (email, password) => (dispatch) => {
             })
         })
         .catch(err => {
+            console.log("error")
+            console.log(err)
             dispatch(
                 returnErrors(err.response.data.message, err.response.status, 'LOGIN_FAIL')
             );
@@ -42,6 +45,7 @@ export const loginFirm = (email, password) => (dispatch) => {
                 type: LOGIN_FAIL
             });
         });
+    console.log(Config.apiUrl)
 }
 
 export const loginEmployee = (email, password) => (dispatch) => {
