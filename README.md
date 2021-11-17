@@ -14,3 +14,5 @@ In a separate terminal,
 1. Set your present working directory as `/frontend`.
 2. Run `npm install`.
 3. Run `npm run start`
+
+The backend was earlier accessible at http://188.166.176.52:8081/, but has been taken down. 
